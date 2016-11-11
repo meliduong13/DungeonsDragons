@@ -4,12 +4,23 @@
 #include <iostream>
 #include <windows.h>
 
+//! @file
+//! @brief Implementation file for the MapEditor class
+
+
+//! Creates the map and saves it to a file 
+//! @param height: the height of the map
+//! @param width: the width of the map
+//! @param map_name: the name of the map/quest
 bool MapEditor::createMap(int hight, int width, std::string map_name)
 {
 	current_map = new Map(hight, width, map_name);
 	return saveMap(map_name);
 }
 
+//! Loads the map from a file
+//! @param mapname: the map name corresponding to the file that the map is saved in
+//! @return a boolean reprenting whether the map can be loaded correctly
 bool MapEditor::loadMap(std::string mapName)
 {
 	delete current_map;
@@ -56,6 +67,9 @@ bool MapEditor::loadMap(std::string mapName)
 	return false;
 }
 
+//! Saves the map the current map to a specific file
+//! @param mapName: a string representing the map's file name 
+//! @return a boolean representing that the map was saved successfully
 bool MapEditor::saveMap(std::string mapName)
 {
 	if (!current_map->validatePath()) return false;
@@ -87,6 +101,8 @@ bool MapEditor::saveMap(std::string mapName)
 	return false;
 }
 
+//! Gets all of the current maps
+//! @return a set of all the map items in a directory
 std::set<std::string> MapEditor::getMaps()
 {
 	std::set<std::string> set = std::set<std::string>();

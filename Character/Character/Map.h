@@ -1,5 +1,4 @@
 #pragma once
-#include <afx.h>
 #include <set>
 #include <string>
 
@@ -50,8 +49,5 @@ public:
 	bool moveRight();
 	bool moveUp();
 	bool moveDown();
-	//virtual void Serialize(CArchive& ar);
-	//protected:
-	//DECLARE_SERIAL(Map);
 };
 

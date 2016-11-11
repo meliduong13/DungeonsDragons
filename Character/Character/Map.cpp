@@ -2,7 +2,6 @@
 #include "set"
 #include <string> 
 #include <locale>
-#include <codecvt>
 #include <iostream>
 using namespace std;
 //IMPLEMENT_SERIAL(Map, Map, 1);
@@ -98,11 +97,19 @@ bool Map::validatePath(int start_x, int start_y, int end_x, int end_y)
 	return validate(start_x, start_y, end_x, end_y, set);
 }
 
+
+//! The validates the path at the set starting and ending points
+//! @return bool value that indicates whether there is a valid at the set start and end points.
 bool Map::validatePath()
 {
 	return validatePath(start_point_x, start_point_y, end_point_x, end_point_y);
 }
 
+
+//! Tries to set the end points
+//! @param x: an integer value of the horizontal index of the starting point
+//! @param y: an integer value of the vertical index of the starting point
+//! @return bool whether the start point is valid
 bool Map::trySetEndPoint(int end_x, int end_y)
 {
 	if (end_x < 0 || end_x >= mapWidth || end_y < 0 || end_y >= mapHeight)
@@ -115,6 +122,11 @@ bool Map::trySetEndPoint(int end_x, int end_y)
 	return true;
 }
 
+
+//! Tries to set the start points
+//! @param x: an integer value of the horizontal index of the starting point
+//! @param y: an integer value of the vertical index of the starting point
+//! @return bool whether the start point is valid
 bool Map::trySetStartPoint(int start_x, int start_y)
 {
 	if (start_x < 0 || start_x >= mapWidth || start_y < 0 || start_y >= mapHeight)
@@ -154,11 +166,17 @@ bool Map::isOccupied(int x, int y)
 	return false;
 }
 
+//! Implementation of getting a character from a cell
+//! @param x: an integer value of horizontal index of the map's grid
+//! @param y: an integer value of vertical index of the map's grid
+//! @return : a character value of what's at the map cell
 char Map::getCharacter(int x, int y)
 {
 	return map[y][x];
 }
 
+//! Moves the character up in the map
+//! @return a boolean indicating that the character can move up
 bool Map::moveUp(){
 	if (player_y == 0 ){
 		return false;
@@ -168,6 +186,9 @@ bool Map::moveUp(){
 	map[player_y][player_x] = 'p';
 	return true; 
 }
+
+//! Moves the character down in the map
+//! @return a boolean indicating that the character can move down
 bool Map::moveDown(){
 	if (player_y == mapHeight - 1){
 		return false;
@@ -177,6 +198,9 @@ bool Map::moveDown(){
 	map[player_y][player_x] = 'p';
 	return true;
 }
+
+//! Moves the character right in the map
+//! @return a boolean indicating that the character can move right 
 bool Map::moveRight(){
 	if (player_x == mapWidth -1)
 	{
@@ -187,6 +211,9 @@ bool Map::moveRight(){
 	map[player_y][player_x] = 'p';
 	return true;
 }
+
+//! Moves the character left in the map
+//! @return a boolean indicating that the character can move left 
 bool Map::moveLeft(){
 	if (player_x == 0){
 		return false;
@@ -197,8 +224,8 @@ bool Map::moveLeft(){
 	return true;
 }
 
-//!Displays the map and clears the map before displaying
-//!the character at a new position
+//! Displays the map and clears the map before displaying
+//! the character at a new position
 void Map::displayMap()
 {
 	system("cls");
