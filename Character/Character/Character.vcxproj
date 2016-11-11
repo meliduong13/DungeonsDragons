@@ -11,18 +11,18 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Dice\Dice\Dice.h" />
     <ClInclude Include="Ability.h" />
     <ClInclude Include="Character.h" />
+    <ClInclude Include="Dice.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemContainer.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MapEditor.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Dice\Dice\Dice.cpp" />
     <ClCompile Include="Ability.cpp" />
     <ClCompile Include="Character.cpp" />
+    <ClCompile Include="Dice.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemContainer.cpp" />
     <ClCompile Include="main.cpp" />
