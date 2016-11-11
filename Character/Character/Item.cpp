@@ -9,6 +9,7 @@
 
 int Item::ID = 0;
 
+//! the default constructor 
 Item::Item()
 {
 	type = "noname";//ex helmet, belt, etc
@@ -19,7 +20,7 @@ Item::Item()
 }
 
 
-//! default constructor
+//! Creates a item of a specific type
 Item::Item(string atype)
 {
 	type = atype;//ex helmet, belt, etc
@@ -30,6 +31,7 @@ Item::Item(string atype)
 	chosenAbility();
 }
 
+//! Creates a ability vector 
 void Item::createAbilityVector()
 {
 	if (type == "Helmet"){
@@ -79,6 +81,7 @@ void Item::createAbilityVector()
 //!this function generates randomly the ability to be enchanted
 //!it is chosen amongst the ability vector list for that item
 //the user cannot choose the ability to be enhanced
+//! @return the ability name
 string Item::chosenAbility()
 {
 	int max = abilityVector.size() - 1;
@@ -92,6 +95,10 @@ string Item::chosenAbility()
 	return abilityName;
 }
 
+//! Generates a random number
+//! @param min: the minimum range of the random number 
+//! @param max: the maximum range of the random number 
+//! @return a random number 
 int Item::randomGen(int min, int max)
 {
 	srand(time(NULL));

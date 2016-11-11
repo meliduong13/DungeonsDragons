@@ -111,6 +111,8 @@ void Character::correctScore() {
 	
 }
 
+//! Calculates the proficiency bonus of the character
+//! @return proficiency bonus
 int Character::calculatePB() {
 	if (1 <= level <= 4)
 		return 2;
@@ -124,6 +126,7 @@ int Character::calculatePB() {
 		return 6;
 }
 
+//! Prints the profile of the character 
 void Character::printProfile(){
 
 	vector<Item*> bp = wornItems->getItems();

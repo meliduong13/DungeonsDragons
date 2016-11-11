@@ -34,12 +34,15 @@ int Ability::calculateScore() {
 	return  totalScore - minScore;
 }
 
+//! Calculates the modifiyer of the character
 void Ability::calculateModifier() {
 	//cout << "+_+_+_+__++_+__+_+_+__+_+_+_+_++_+_++ HERE: " << " score : " << score << " modifier : " << floor(float((score - 10.0) / 2.0)) << endl;
 	//cout << "modifier = " << floor((score - 10) / 2) << endl;
 	modifier = floor(float((score - 10.0) / 2.0));
 }
 
+//! increases the score
+//! @param score number to increase by
 void Ability::incScore(int number) {
 	score += number;
 }

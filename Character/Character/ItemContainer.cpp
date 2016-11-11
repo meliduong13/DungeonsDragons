@@ -9,7 +9,9 @@ ItemContainer::ItemContainer()
 	items = vector<Item*>();
 }
 
-
+//! Contructor to make a item container
+//! @param aname: the container name
+//! @param atype: the container's type
 ItemContainer::ItemContainer(string aname, string atype)
 {
 	items = vector<Item*>();
@@ -74,6 +76,8 @@ bool ItemContainer::addItem(Item* anitem)
 		
 }//addItem
 
+//! Removes an item from the container
+//! @param anitem: the item to remove
 void ItemContainer::removeItem(Item* anitem)
 {
 	//if (type == "wornItems")
@@ -106,11 +110,15 @@ Item ItemContainer::getItem(int itemId)
 //todo: retrieve a list of ID for an item type
 
 
+//! gets the type of the item container
+//! @return string: the type of the container 
 string ItemContainer::getType(){
 
 	return type;
 }
 
+//! gets the size of the item container
+//! @return int: the size of the container 
 int ItemContainer::getSize()
 {
 	int num = 0;
@@ -119,6 +127,9 @@ int ItemContainer::getSize()
 	return num;
 }
 
+//! gets a item's index withn the item container 
+//! @param aitemName: the item name 
+//! @return int: the item's index
 int ItemContainer::getItemPosition(string aitemName) {
 	for (int i = 0; i < items.size(); i++) {
 		if (items[i]->getType() == aitemName)
@@ -126,7 +137,7 @@ int ItemContainer::getItemPosition(string aitemName) {
 	}
 }
 
-
+//! Displays the content within a container 
 void ItemContainer::displayContent(){
 	for (int i = 0; i < items.size(); i++)
 		cout << "item " << (i+1) <<"_" << items[i]->getType() << endl;
