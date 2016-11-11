@@ -26,9 +26,9 @@ Map::Map(int height, int width, std::string map_name)
 	mapWidth = width;
 	map = new char*[width];
 	Map::map_name = map_name;
-	for (int i = 0; i < width; ++i)
+	for (int i = 0; i < height; ++i)
 	{
-		map[i] = new char[height];
+		map[i] = new char[width];
 	}
 
 	for (int i = 0; i < height; ++i)
@@ -61,7 +61,7 @@ bool Map::validate(int start_x, int start_y, int end_x, int end_y, std::set<std:
 		return false;
 	}
 	if (start_x == end_x && start_y == end_y) return true;
-	if (map[start_x][start_y] == 'w') return false;
+	if (map[start_y][start_x] == 'w') return false;
 	int x[2];
 	int y[2];
 	x[0] = ((start_x == 0) ? start_x : start_x - 1);
@@ -148,7 +148,7 @@ void Map::fillCell(int x, int y, char obj)
 //! @return : a boolean true if the cell is occupeid false otherwise
 bool Map::isOccupied(int x, int y)
 {
-	if (map[x][y] != ' ') {
+	if (map[y][x] != ' ') {
 		return true;
 	}
 	return false;
@@ -156,91 +156,46 @@ bool Map::isOccupied(int x, int y)
 
 char Map::getCharacter(int x, int y)
 {
-	return map[x][y];
+	return map[y][x];
 }
 
 bool Map::moveUp(){
-	if (player_x == 0 ){
+	if (player_y == 0 ){
 		return false;
 	}
-	map[player_x][player_y] = ' ';
-	player_x--;
-	map[player_x][player_y] = 'p';
+	map[player_y][player_x] = ' ';
+	player_y--;
+	map[player_y][player_x] = 'p';
 	return true; 
 }
 bool Map::moveDown(){
-	if (player_x == mapWidth - 1){
+	if (player_y == mapHeight - 1){
 		return false;
 	}
-	map[player_x][player_y] = ' ';
-	player_x++;
-	map[player_x][player_y] = 'p';
+	map[player_y][player_x] = ' ';
+	player_y++;
+	map[player_y][player_x] = 'p';
 	return true;
 }
 bool Map::moveRight(){
-	if (player_y == 0)
+	if (player_x == mapWidth -1)
 	{
 		return false;
 	}
-	map[player_x][player_y] = ' ';
-	player_y++;
-	map[player_x][player_y] = 'p';
+	map[player_y][player_x] = ' ';
+	player_x++;
+	map[player_y][player_x] = 'p';
 	return true;
 }
 bool Map::moveLeft(){
-	if (player_y == mapWidth - 1){
+	if (player_x == 0){
 		return false;
 	}
-	map[player_x][player_y] = ' ';
-	player_y--;
-	map[player_x][player_y] = 'p';
+	map[player_y][player_x] = ' ';
+	player_x--;
+	map[player_y][player_x] = 'p';
 	return true;
 }
-/*
-void Map::Serialize(CArchive& ar)
-{
-using convert_type = std::codecvt_utf8<wchar_t>;
-std::wstring_convert<convert_type, wchar_t> converter;
-//std::string str = converter.to_bytes(map_name);
-
-CString c_string(str.c_str());
-
-if (ar.IsStoring())
-{
-ar << mapWidth;
-ar << mapHeight;
-ar << c_string;
-ar << start_point_x;
-ar << start_point_y;
-ar << end_point_x;
-ar << end_point_y;
-for (int i = 0; i < mapWidth; ++i)
-{
-for (int j = 0; j < mapHeight; ++j)
-{
-ar << map[i][j];
-}
-}
-}
-else
-{
-ar >> mapWidth;
-ar >> mapHeight;
-ar >> c_string;
-ar >> start_point_x;
-ar >> start_point_y;
-ar >> end_point_x;
-ar >> end_point_y;
-for (int i = 0; i < mapWidth; ++i)
-{
-for (int j = 0; j < mapHeight; ++j)
-{
-std::cout << "hello";
-//ar >> map[i][j];
-}
-}
-}
-} */
 
 //!Displays the map and clears the map before displaying
 //!the character at a new position
