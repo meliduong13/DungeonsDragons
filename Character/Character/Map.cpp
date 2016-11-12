@@ -199,6 +199,11 @@ bool Map::moveDown(){
 	return true;
 }
 
+void Map::setCharacterAtStartingPoint()
+{
+	map[start_point_y][start_point_x] = 'p';
+}
+
 //! Moves the character right in the map
 //! @return a boolean indicating that the character can move right 
 bool Map::moveRight(){

@@ -49,5 +49,6 @@ public:
 	bool moveRight();
 	bool moveUp();
 	bool moveDown();
+	void setCharacterAtStartingPoint();
 };
 
