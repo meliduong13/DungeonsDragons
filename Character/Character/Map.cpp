@@ -228,7 +228,6 @@ bool Map::moveLeft(){
 //! the character at a new position
 void Map::displayMap()
 {
-	system("cls");
 	for (int i = 0; i < mapHeight; i++)
 	{
 		for (int j = 0; j < mapWidth; j++)
