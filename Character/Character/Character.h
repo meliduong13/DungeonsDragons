@@ -39,4 +39,6 @@ public:
 	void setRow(int rw){ rowPos = rw; }
 	void setCol(int col){ colPos = col; }
 	void setCoordinates(int row, int col){ rowPos = row, colPos = col; }
+	int incrLevel() { return level += 1; }
+	int getLevel() { return level; }
 };

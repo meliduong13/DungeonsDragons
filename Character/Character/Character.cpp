@@ -130,6 +130,9 @@ int Character::calculatePB() {
 void Character::printProfile(){
 
 	vector<Item*> bp = wornItems->getItems();
+	vector<Item*> backpack_bp = backpack->getItems();
+	vector<Item*> treasure_bp = tresureChest->getItems();
+
 	cout << "USER PROFILE" << endl;
 	cout << "level : " << level << endl; 
 	cout << "hitPoints : " << hitPoints << endl; 
@@ -142,12 +145,13 @@ void Character::printProfile(){
 	}
 	if (bp.size() == 0)
 	{
-		cout << "*********************EMPTY BACKPACK*******************" << endl;
-		cout << "*********************END OF EMPTY BACKPACK*******************" << endl;
+		cout << "*********************EMPTY WORN ITEM*******************" << endl;
+		cout << "*********************END OF EMPTY WORN ITEM*******************" << endl;
 	}
+
 	else
 	{
-		cout << "**********************NON EMPTY BACKPACK****************" << endl;
+		cout << "**********************EMPTY WORN ITEM****************" << endl;
 		//loop through all items of wornItems itemContainer
 		for (int i = 0; i < bp.size(); i++)
 		{
@@ -156,8 +160,55 @@ void Character::printProfile(){
 			cout << "chosen ability toe enchanted by the item : " << bp[i]->getAbilityName() << endl;
 			cout << "enchanted bonus is : " << bp[i]->getEnchBonus() << endl;
 		}
-		cout << "**********************END OF NON EMPTY BACKPACK****************" << endl;
+		cout << "**********************END OF EMPTY WORN ITEM****************" << endl;
+
 
 	}//else
-}
+		//------------------------------------------------------------------------------------------
+		if (backpack_bp.size() == 0)
+		{
+			cout << "*********************BACKPACK ITEM*******************" << endl;
+			cout << "*********************END OF EMPTY BACKPACK ITEM *******************" << endl;
+		}
+
+		else
+		{
+			cout << "**********************EMPTY BACKPACK ITEM****************" << endl;
+			//loop through all items of wornItems itemContainer
+			for (int i = 0; i < backpack_bp.size(); i++)
+			{
+				cout << "ID : " << backpack_bp[i]->getId() << endl;
+				cout << "item type (name) : " << backpack_bp[i]->getType() << endl;
+				cout << "chosen ability toe enchanted by the item : " << backpack_bp[i]->getAbilityName() << endl;
+				cout << "enchanted bonus is : " << backpack_bp[i]->getEnchBonus() << endl;
+			}
+			cout << "**********************END OF BACKPACK ITEM****************" << endl;
+		}//else
+
+
+			//------------------------------------------------------------------------------------------
+			if (backpack_bp.size() == 0)
+			{
+				cout << "*********************TREASURE ITEM*******************" << endl;
+				cout << "*********************END OF EMPTY TREASURE ITEM *******************" << endl;
+			}
+
+			else
+			{
+				cout << "**********************EMPTY TREASURE ITEM****************" << endl;
+				//loop through all items of wornItems itemContainer
+				for (int i = 0; i < treasure_bp.size(); i++)
+				{
+					cout << "ID : " << treasure_bp[i]->getId() << endl;
+					cout << "item type (name) : " << treasure_bp[i]->getType() << endl;
+					cout << "chosen ability toe enchanted by the item : " << treasure_bp[i]->getAbilityName() << endl;
+					cout << "enchanted bonus is : " << treasure_bp[i]->getEnchBonus() << endl;
+				}
+				cout << "**********************END OF TREASURE ITEM****************" << endl;
+
+
+			}//else
+
+	}//end of function
+
 

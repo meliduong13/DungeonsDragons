@@ -23,7 +23,7 @@ Map::Map(int height, int width, std::string map_name)
 	set = std::set<std::string>();
 	mapHeight = height;
 	mapWidth = width;
-	map = new char*[width];
+	map = new char*[height];
 	Map::map_name = map_name;
 	for (int i = 0; i < height; ++i)
 	{
@@ -172,7 +172,7 @@ bool Map::isOccupied(int x, int y)
 //! @return : a character value of what's at the map cell
 char Map::getCharacter(int x, int y)
 {
-	return map[y][x];
+	return map[x][y];
 }
 
 //! Moves the character up in the map

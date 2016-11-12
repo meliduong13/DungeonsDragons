@@ -26,28 +26,6 @@ Character *aCharacter = new Character();
 Map *aMap = new Map(); 
 MapEditor *editor = new MapEditor();
 Item *myItem;
-
-
-bool startNewGame() {
-	cout << "Menu:" << endl << "[1] Start new game :" << endl << "[2] Load previous game " << endl << endl;
-	cin >> choice;
-	if (choice != 1 && choice != 2) 
-	{ 
-		return false; 
-	}
-
-	return true;
-} //1
-bool chooseNewMap() {
-	cout << "Do you wish to create:" << endl;
-	cout << "[1] Map" << endl << "[2] Default Map" << endl;
-	cin >> choice;
-	if (choice != 1 && choice != 2) 
-	{
-		return false;
-	}
-	return true;
-} //2
 void createNewMap() {
 	delete aMap;
 	cout << "Enter the quest name: " << endl;
@@ -58,10 +36,74 @@ void createNewMap() {
 	cout << "Enter desired map height: " << endl;
 	cin >> height;
 
-	editor->createMap(height, width, questName);
+	editor->createMap(height, width, mapName);
 	aMap = editor->current_map;
-	aMap->displayMap();
 } //3
+
+bool chooseNewMap() {
+	cout << "Do you wish to create:" << endl;
+	cout << "[1] Map" << endl << "[2] Default Map" << endl;
+	cin >> choice;
+	if (choice != 1 && choice != 2)
+	{
+		return false;
+	}
+
+	if (choice == 1)
+	{
+		createNewMap();
+	}
+	else {
+		editor->createMap(5, 5, "default");
+		aMap = editor->current_map;
+	}
+
+	aMap->trySetStartPoint(0, 0);
+	aMap->trySetEndPoint(width - 1, height - 1);
+	aMap->setCharacterAtStartingPoint();
+
+	return true;
+} //2
+bool startNewGame() {
+	cout << "Menu:" << endl << "[1] Start new game :" << endl << "[2] Load previous game " << endl << endl;
+	cin >> choice;
+	if (choice != 1 && choice != 2) 
+	{ 
+		return false; 
+	}
+
+	if (choice == 1)
+	{
+		while (!chooseNewMap()) {
+			cout << "Invalid Choice! Select between 1 and 2";
+		}
+	}
+	else
+	{
+
+			cout << "Welcome back, the game will now resume from the previous state" << endl;
+			cout << "Loading..." << endl;
+				set<string> s = editor->getMaps();
+				vector<string> v(s.begin(), s.end());
+				int i = 0;
+				int choice;
+				for each (string var in v)
+				{
+					if (i == 0)
+					{
+						i++;
+						continue;
+					}
+					cout << i << "\t" << var << endl;
+					i++;
+				}
+				cin >> choice;
+				editor->loadMap(v[choice]);
+				aMap = editor->current_map;
+	}
+
+	return true;
+} //1
 
 
 void fillCellHandler() {
@@ -166,26 +208,9 @@ bool addMapObject() {
 	return false;
 }//4
 	
- 
-
-static void createMap(Character *acharacter, Map *aMap )
-{
-	//create a map and display
-	if (choice == 1)
-	{
-		//2
-		//3
-
-		do{//do while add object
-			//4 {//5 //6}
-
-			//switch
-		} while (choice != 0); //do while add object
-	}//if choice is 1
-}//if choice is 1 FIRST
 
 void moveCharacter(){
-	cin >> choice;
+	
 
 	do{
 		cout << "Move the character again"<<endl;
@@ -193,34 +218,132 @@ void moveCharacter(){
 		cout << "4 - Move left" << endl;
 		cout << "5 - Move down" << endl;
 		cout << "6 - Move right" << endl;
+		cout << "0 - Save game" << endl;
 		cin >> choice;
-	if (choice == 4)
-	{
-		system("CLS");
-		aMap->moveLeft();
-		aMap->displayMap();
-	}
-	if (choice == 5){
-		system("CLS");
-		aMap->moveDown();
-		aMap->displayMap();
-	}
-	if (choice == 6){
-		system("CLS");
-		aMap->moveRight();
-		aMap->displayMap();
-	}
-	if (choice == 8){
-		system("CLS");
-		aMap->moveUp();
-		aMap->displayMap();
-	}
+		if (choice == 4)
+		{
+			system("CLS");
+			aMap->moveLeft();
+			aMap->displayMap();
+		
+		}
+		else if (choice == 5){
+			system("CLS");
+			aMap->moveDown();
+			aMap->displayMap();
+		
+		}
+		else if (choice == 6){
+			system("CLS");
+			aMap->moveRight();
+			aMap->displayMap();
+	
+		}
+		if (choice == 8)
+		{
+			system("CLS");
+			aMap->moveUp();
+			aMap->displayMap();
+			
+		}
+
+		if (choice == 0)
+		{
+			editor->saveMap(editor->current_map->map_name);
+		}
+		if (aMap->player_x == aMap->end_point_x && aMap->player_y == aMap->end_point_y)
+		{
+			cout << "Character Level BEFORE is : " << aCharacter->getLevel();
+			cout << "Character Level AFTER is : " << aCharacter->incrLevel();
+			return;
+		}
 	} while (true);
+}
+
+bool addItem() {
+	cout << "Select which item do you want to create" << endl;
+	cout << "1 - Armor" << endl;
+	cout << "2 - Ring" << endl;
+	cout << "3 - Helmet" << endl;
+	cout << "4 - Boots" << endl;
+	cout << "5 - Belt" << endl;
+	cout << "6 - Sword" << endl;
+	cout << "7 - Shield" << endl;
+	cout << "0 - To Continue..." << endl << endl;
+	cin >> choice;
+	if (choice < 0 || choice > 7)
+	{
+		return false;
+	}
+
+	if (choice == 0)
+	{
+		return true;
+	}
+
+	switch (choice)
+	{
+	case 1: myItem = new Item("Armor");
+		aCharacter->getWornItemContainer()->addItem(myItem);
+		aCharacter->wearUpdate("add");
+		aCharacter->printProfile();
+		break;
+	case 2: myItem = new Item("Ring");
+		aCharacter->getWornItemContainer()->addItem(myItem);
+		aCharacter->wearUpdate("add");
+		aCharacter->printProfile();
+		break;
+	case 3: myItem = new Item("Helmet");
+		aCharacter->getWornItemContainer()->addItem(myItem);
+		aCharacter->wearUpdate("add");
+		aCharacter->printProfile();
+		break;
+	case 4: myItem = new Item("Boots");
+		aCharacter->getWornItemContainer()->addItem(myItem);
+		aCharacter->wearUpdate("add");
+		aCharacter->printProfile();
+		break;
+	case 5: myItem = new Item("Belt");
+		aCharacter->getWornItemContainer()->addItem(myItem);
+		aCharacter->wearUpdate("add");
+		aCharacter->printProfile();
+		break;
+	case 6: myItem = new Item("Sword");
+		aCharacter->getWornItemContainer()->addItem(myItem);
+		aCharacter->wearUpdate("add");
+		aCharacter->printProfile();
+		break;
+	case 7: myItem = new Item("Shield");
+		aCharacter->getWornItemContainer()->addItem(myItem);
+		aCharacter->wearUpdate("add");
+		aCharacter->printProfile();
+		break;
+	}
+
+	return false;
+}
+
+
+bool addItemDecision() {
+	cout << "Do you wish to add a new item?" << endl << "[1]  yes" << endl << "[2] no" << endl;
+	cin >> choice;
+	if (choice != 1 && choice != 2)
+	{
+		return false;
+	}
+
+	if (choice == 1)
+	{
+		while (!addItem()) {}
+	}
+
+	return true;
 }
 
 int main() {
 
 	cout << "Welcome to Dragon and Dugeons" << endl;
+
 	while (!startNewGame()) {
 		cout << " Invalid choice. Please select a choice between 1 and 2" << endl;
 	}
@@ -229,97 +352,31 @@ int main() {
 	aCharacter->printProfile();
 	cout << "----------USER PROFILE----------" << endl;
 
-	while (!chooseNewMap()) {
-		cout << "Invalid Choice! Select between 1 and 2";
-	}
+	aMap->displayMap();
 
-	createNewMap();
 
 	while (!addMapObject()) {
 		if (exitFromSelOpt || exitWhile) {
-			cout << "Stasrting the game" << endl;
+			cout << "Starting the game" << endl;
 			break;
 		}
 		cout << "Invalid Choice!" << endl;
 	}
-	cout << "Starting the game" << endl;
-	cout << "Star moving the character" << endl;
-	cout << "8 - Move up" << endl;
-	cout << "4 - Move left" << endl;
-	cout << "5 - Move down" << endl;
-	cout << "6 - Move right" << endl;
+
+	while (!addItemDecision()){
+		cout << "Please select a choice between the offered options" << endl;
+	}
+	editor->current_map->displayMap();
 	moveCharacter();
 
 		
 	return 0;
 }
-	//createMap(c, m);		
 
 
-	//	cout << "do you wish to add a new item?" << endl << "1 - yes" << endl << "2 - no" << endl;
-	//	do{
-	//		cout << "Please select a choice between the offered options" << endl;
-	//		cin >> choice;
-	//	} while (choice < 1 || choice > 2);
-	//	if (choice == 1){
-	//		
-	//		do{
-	//			cout << "Select which item do you want to create" << endl;
-	//			cout << "1 - Armor" << endl;
-	//			cout << "2 - Ring" << endl;
-	//			cout << "3 - Helmet" << endl;
-	//			cout << "4 - Boots" << endl;
-	//			cout << "5 - Belt" << endl;
-	//			cout << "6 - Sword" << endl;
-	//			cout << "7 - Shield" << endl;
-	//			cout << "0 - To Continue..." << endl << endl;
-	//			do{
-	//				cin >> choice;
-	//			} while (choice < 0 || choice > 7);
-	//			
-	//			
-	//			switch (choice)
-	//			{
-	//				case 1: myItem = new Item("Armor");
-	//						c->getWornItemContainer()->addItem(myItem);
-	//						c->wearUpdate("add");
-	//						c->printProfile();
-	//						break;
-	//				case 2: myItem = new Item("Ring");
-	//						c->getWornItemContainer()->addItem(myItem);
-	//						c->wearUpdate("add");
-	//						c->printProfile();
-	//						break;
-	//				case 3: myItem = new Item("Helmet");
-	//						c->getWornItemContainer()->addItem(myItem);
-	//						c->wearUpdate("add");
-	//						c->printProfile();
-	//						break;
-	//				case 4: myItem = new Item("Boots");
-	//						c->getWornItemContainer()->addItem(myItem);
-	//						c->wearUpdate("add");
-	//						c->printProfile();
-	//						break;
-	//				case 5: myItem = new Item("Belt");
-	//						c->getWornItemContainer()->addItem(myItem);
-	//						c->wearUpdate("add");
-	//						c->printProfile();
-	//						break;
-	//				case 6: myItem = new Item("Sword");
-	//						c->getWornItemContainer()->addItem(myItem);
-	//						c->wearUpdate("add");
-	//						c->printProfile();
-	//						break;
-	//				case 7: myItem = new Item("Shield");
-	//						c->getWornItemContainer()->addItem(myItem);
-	//						c->wearUpdate("add");
-	//						c->printProfile();
-	//						break;
-	//				case 0: cout << "Starting the game" << endl;
-	//					break;
-	//			}
-	//		} while (choice != 0);
-	//	}//Once selected, prompt the item enhancement
+			
+
+	//Once selected, prompt the item enhancement
 
 	//}//first if
 	//else

@@ -39,9 +39,9 @@ bool MapEditor::loadMap(std::string mapName)
 		std::getline(myfile, line);
 		width = atoi(line.c_str());
 		current_map = new Map(width, height, name);
-		for (int i = 0; i < width; ++i)
+		for (int i = 0; i < height; ++i)
 		{
-			for (int j = 0; j < height; ++j)
+			for (int j = 0; j < width; ++j)
 			{
 				char c = myfile.get();
 				current_map->fillCell(i, j, c);
