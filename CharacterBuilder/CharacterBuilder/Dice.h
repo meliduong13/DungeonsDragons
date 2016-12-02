@@ -1,9 +1,10 @@
 //! @file 
 //! @brief Dice class header file 
-
+#pragma once 
 #ifndef INC_345_DICE_H
 #define INC_345_DICE_H
 #endif //INC_345_DICE_H
+
 
 #include <random>
 #include <regex>
@@ -32,7 +33,7 @@ public:
 
 	//! Declaring setter to set x, y, z, and modifier values"
 	void setDiceValues(int xValue, int yValue, int zValue, string modifierSign);
-	
+
 	//! Declaring checkRollString function"
 	bool checkRollString(string aRollString);
 

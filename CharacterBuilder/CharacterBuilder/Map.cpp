@@ -178,13 +178,13 @@ char Map::getCharacter(int x, int y)
 //! Moves the character up in the map
 //! @return a boolean indicating that the character can move up
 bool Map::moveUp(){
-	if (player_y == 0 ){
+	if (player_y == 0){
 		return false;
 	}
 	map[player_y][player_x] = ' ';
 	player_y--;
 	map[player_y][player_x] = 'p';
-	return true; 
+	return true;
 }
 
 //! Moves the character down in the map
@@ -207,7 +207,7 @@ void Map::setCharacterAtStartingPoint()
 //! Moves the character right in the map
 //! @return a boolean indicating that the character can move right 
 bool Map::moveRight(){
-	if (player_x == mapWidth -1)
+	if (player_x == mapWidth - 1)
 	{
 		return false;
 	}
@@ -226,6 +226,60 @@ bool Map::moveLeft(){
 	map[player_y][player_x] = ' ';
 	player_x--;
 	map[player_y][player_x] = 'p';
+	return true;
+}
+
+bool Map::enemyMoveUp() {
+	if (player_y == 0) {
+		return false;
+	}
+	map[enemy_y][enemy_x] = ' ';
+	enemy_y--;
+	map[enemy_y][enemy_x] = 'E';
+	return true;
+}
+
+//! Moves the character down in the map
+//! @return a boolean indicating that the character can move down
+bool Map::enemyMoveDown() {
+	if (enemy_y == mapHeight - 1) {
+		return false;
+	}
+	map[enemy_y][enemy_x] = ' ';
+	enemy_y++;
+	map[enemy_y][enemy_x] = 'E';
+	return true;
+}
+
+void Map::setEnemyAtStartingPoint()
+{
+	map[mapHeight - 1][mapWidth - 1] = 'E';
+	enemy_x = mapHeight - 1;
+	enemy_y = mapWidth - 1;
+}
+
+//! Moves the character right in the map
+//! @return a boolean indicating that the character can move right 
+bool Map::enemyMoveRight() {
+	if (enemy_x == mapWidth - 1)
+	{
+		return false;
+	}
+	map[enemy_y][enemy_x] = ' ';
+	enemy_x++;
+	map[enemy_y][enemy_x] = 'E';
+	return true;
+}
+
+//! Moves the character left in the map
+//! @return a boolean indicating that the character can move left 
+bool Map::enemyMoveLeft() {
+	if (enemy_x == 0) {
+		return false;
+	}
+	map[enemy_y][enemy_x] = ' ';
+	enemy_x--;
+	map[enemy_y][enemy_x] = 'E';
 	return true;
 }
 
