@@ -26,6 +26,7 @@ private:
 public:
 	Item();
 	Item(string type);
+	Item(string type, int id, int enchBonus, string abilityName);
 	string getType(){ return type; }
 	int getId(){ return thisId; }
 	int getEnchBonus() { return enchantedBonus; }

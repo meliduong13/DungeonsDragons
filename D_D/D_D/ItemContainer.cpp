@@ -26,6 +26,13 @@ ItemContainer::ItemContainer(vector<Item*> containeritems)
 	items = containeritems;
 }
 
+ItemContainer::ItemContainer(vector<Item*> items, string name, string type)
+{
+	this->items = items;
+	this->name = name;
+	this->type = type;
+}
+
 //! method to get the items of the container
 //! @return : return the vector of items contained in the ItemContainer
 vector<Item*> ItemContainer::getItems()

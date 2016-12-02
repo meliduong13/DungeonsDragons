@@ -61,6 +61,7 @@ bool chooseNewMap() {
 	aMap->trySetStartPoint(0, 0);
 	aMap->trySetEndPoint(width - 1, height - 1);
 	aMap->setCharacterAtStartingPoint();
+	editor->saveMap(editor->current_map->map_name);
 
 	return true;
 } //2
@@ -349,7 +350,7 @@ int main() {
 	}
 
 	cout << "----------USER PROFILE----------" << endl;
-	aCharacter->printProfile();
+//	aCharacter->printProfile(); THIS DOES NOT WORK FIX!
 	cout << "----------USER PROFILE----------" << endl;
 
 	aMap->displayMap();

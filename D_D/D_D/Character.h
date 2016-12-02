@@ -17,16 +17,14 @@ protected:
 	string characterClass = "fighter";
 	
 	vector <int> attackBonus;//Added from a3
-	int armorClass = 0; //Added from a3
-	int damageBonus = 0; //Added from a3
-	int nbrOfAttacks = 0; //Added from a3
 	vector <Ability*> abilities;
 	
-	ItemContainer *backpack;
-	ItemContainer *wornItems;
-	ItemContainer *tresureChest;
+
 
 public:
+	Character(string characterType, string characterClass, ItemContainer* backpack, ItemContainer* wornItems, ItemContainer* treasureChest, vector<Ability*> abilities, int damageBonus, 
+		int nbrOfAttacks, int armorClass, int hitPoints, int level, int colPos, int rowPos);
+	Character();
 	void setHitPoints(int level);
 	Ability* getAbility(string aName);
 	ItemContainer* getWornItemContainer() { return wornItems; }
@@ -36,13 +34,17 @@ public:
 	void removeUpdate(Item  *i);
 	vector <Ability*> getAbilities(){ return abilities; }
 	void printProfile();
-	int getRow();
-	int getCol();
+	int getRow() { return rowPos; };
+	int getCol() { return colPos; };
+	ItemContainer *backpack;
+	ItemContainer *wornItems;
+	ItemContainer *tresureChest;
 	void setRow(int rw){ rowPos = rw; }
 	void setCol(int col){ colPos = col; }
 	void setCoordinates(int row, int col){ rowPos = row, colPos = col; }
 	int incrLevel() { return level += 1; }
-	
+	std::string getCharacterType() { return characterType; }
+	std::string getCharacterClass() { return characterClass; }
 	void setLevel(int alevel) { level = alevel; } //Added from a3
 	int getLevel() { return level; } //Added from a3
 	int getHitPoints() { return hitPoints; } //Added from a3
@@ -60,4 +62,7 @@ public:
 	void setBackPack(); //Added from a3
 	void setTreasureChest(); //Added from a3
 	void setAbilities(); //Added from a3
+	int armorClass = 0; //Added from a3
+	int damageBonus = 0; //Added from a3
+	int nbrOfAttacks = 0; //Added from a3
 }; 

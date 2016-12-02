@@ -10,6 +10,13 @@ Ability::Ability(string aName){
 	//cout << "name = " << aName << " score = " << score << " modifier = " << modifier << endl;
 }
 
+Ability::Ability(string name, int score, float modifier)
+{
+	this->name = name;
+	this->score = score;
+	this->modifier = modifier;
+}
+
 // We are taking the best 3 out of 4 rolls
 int Ability::calculateScore() {
 

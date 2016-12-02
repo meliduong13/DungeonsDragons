@@ -11,6 +11,7 @@ protected:
 
 public:
 	Ability(string aName);
+	Ability(string name, int score, float modifier);
 	int getScore() { return score; }
 	void setScore(int aScore) { score = aScore; }
 	void ArmorClass();

@@ -10,6 +10,16 @@ using namespace std;
 //! @brief Implementation file for the Map class  
 //!
 
+void Map::addActor(string actorCode, Character* character)
+{
+	actors[actorCode] = character;
+}
+
+void Map::removeActor(string actorCode)
+{
+	actors.erase(actorCode);
+}
+
 Map::Map()
 {
 	Map(5, 5, "default");

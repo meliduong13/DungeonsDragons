@@ -11,16 +11,17 @@ class ItemContainer{
 
 protected:
 	//enum containerName { backpack, wornItems, treasureChest };
-	string name;
 	string type;
 
 	vector<Item*>items;
 
 public:
+	string name;
 	ItemContainer::ItemContainer();
 	ItemContainer::~ItemContainer();
 	ItemContainer::ItemContainer(string aname, string atype);
 	ItemContainer::ItemContainer(vector<Item*> containeritems);
+	ItemContainer(vector<Item*> items, string name, string type);
 	bool ItemContainer::addItem(Item* anitem);
 	void ItemContainer::removeItem(Item* anitem);
 	Item ItemContainer::getItem(int itemId);

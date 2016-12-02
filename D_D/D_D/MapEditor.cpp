@@ -8,6 +8,62 @@
 //! @brief Implementation file for the MapEditor class
 
 
+void MapEditor::saveItem(Item* item, ofstream* myfile)
+{
+	*myfile << item->getType() << "\n";
+	*myfile << item->getId() << "\n";
+	*myfile << item->getEnchBonus() << "\n";
+	*myfile << item->getAbilityName() << "\n";
+}
+
+void MapEditor::saveItemContainer(ofstream* myfile, ItemContainer* item_container)
+{
+	*myfile << item_container->name << "\n";
+	*myfile << item_container->getType() << "\n";
+	vector<Item*> items = item_container->getItems();
+	*myfile << items.size() << "\n";
+	for (int i = 0; i<items.size(); i++)
+	{
+		saveItem(items[i], myfile);
+	}
+}
+
+void MapEditor::saveAbility(ofstream* myfile, Ability* ability)
+{
+	*myfile << ability->getName() << "\n";
+	*myfile << ability->getScore() << "\n";
+	*myfile << ability->getModifier() << "\n";
+}
+
+void MapEditor::saveCharacters(ofstream* myfile)
+{
+	int size = current_map->getActors().size();
+	*myfile << size << "\n";
+
+	for (auto const& ent1 : current_map->getActors())
+	{
+		*myfile << ent1.first << "\n";
+		Character * character = ent1.second;
+		*myfile << character->getCharacterType() << "\n";
+		*myfile << character->getCharacterClass() << "\n";
+		ItemContainer* backpack = character->backpack;
+		saveItemContainer(myfile, backpack);
+		vector<Ability*> abilities = character->getAbilities();
+		*myfile << abilities.size() << "\n";
+		for (int i = 0; i < abilities.size(); i++)
+		{
+			saveAbility(myfile, abilities[i]);
+		}
+		*myfile << character->damageBonus << "\n";
+		*myfile << character->nbrOfAttacks << "\n";
+		*myfile << character->armorClass << "\n";
+		*myfile << character->getHitPoints() << "\n";
+		*myfile << character->getLevel() << "\n";
+		*myfile << character->getCol() << "\n";
+		*myfile << character->getRow() << "\n";
+	}
+}
+
 //! Creates the map and saves it to a file 
 //! @param height: the height of the map
 //! @param width: the width of the map
@@ -88,6 +144,8 @@ bool MapEditor::saveMap(std::string mapName)
 		}
 		myfile << "\n";
 		myfile << current_map->start_point_x << "\n" << current_map->start_point_y << "\n" << current_map->end_point_x << "\n" << current_map->end_point_y << "\n";
+		saveCharacters(&myfile);
+
 		myfile.close();
 
 		std::ofstream save_file("file_saves", std::ios_base::app);

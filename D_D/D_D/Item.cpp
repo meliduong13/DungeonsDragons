@@ -31,6 +31,16 @@ Item::Item(string atype)
 	chosenAbility();
 }
 
+Item::Item(string type, int id, int enchBonus, string abilityName)
+{
+	createAbilityVector();
+	this->type = type;
+	this->thisId = id;
+	this->enchantedBonus = enchBonus;
+	this->abilityName = abilityName;
+	randomStatNum = 0; 
+}
+
 //! Creates a ability vector 
 void Item::createAbilityVector()
 {

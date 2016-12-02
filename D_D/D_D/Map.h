@@ -1,6 +1,8 @@
 #pragma once
 #include <set>
 #include <string>
+#include "Character.h"
+#include <map>
 
 
 //! @file 
@@ -22,9 +24,10 @@ class Map //: public CObject
 private:
 	std::set<std::string> set;
 	bool validate(int start_x, int start_y, int end_x, int end_y, std::set<std::string>& set);
-
+	map<string, Character*> actors;
 public:
 	char** map;
+
 	int player_x;
 	int player_y;
 	int enemy_x;
@@ -35,9 +38,12 @@ public:
 	int start_point_y;
 	int end_point_x;
 	int end_point_y;
+	void addActor(string actorCode, Character* character);
+	void removeActor(string actorCode);
 	Map();
 	Map(int height, int width, std::string map_name);
 	~Map();
+	std::map<string, Character*> getActors() { return actors; }
 	std::string map_name;
 	bool validatePath(int start_x, int start_y, int end_x, int end_y);
 	bool validatePath();

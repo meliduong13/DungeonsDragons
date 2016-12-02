@@ -2,6 +2,24 @@
 #include "Character.h"
 using namespace std;
 
+Character::Character(string characterType, string characterClass, ItemContainer* backpack, ItemContainer* wornItems, 
+	ItemContainer* treasureChest, vector<Ability*> abilities, int damageBonus, int nbrOfAttacks, int armorClass, int hitPoints, int level, int colPos, int rowPos)
+{
+	this->characterType = characterType;
+	this->characterClass = characterClass;
+	this->backpack = backpack;
+	this->wornItems = wornItems;
+	this->tresureChest = treasureChest;
+	this->abilities = abilities;
+	this->damageBonus = damageBonus;
+	this->nbrOfAttacks = nbrOfAttacks;
+	this->armorClass = armorClass;
+	this->hitPoints = hitPoints;
+	this->level = level;
+	this->colPos = colPos;
+	this->rowPos = rowPos;
+}
+
 void Character::setHitPoints(int level) {
 	Dice aDice;
 	for (int i = 0; i < level; i++){

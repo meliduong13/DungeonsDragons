@@ -15,6 +15,11 @@
 
 class MapEditor
 {
+private:
+	void saveItem(Item* item, ofstream* myfile);
+	void saveItemContainer(ofstream* myfile, ItemContainer * item_container);
+	void saveAbility(ofstream* myfile, Ability* ability);
+	void saveCharacters(ofstream* myfile);
 public:
 	Map* current_map;
 	bool createMap(int hight, int width, std::string map_name);
