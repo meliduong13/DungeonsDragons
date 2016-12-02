@@ -346,7 +346,155 @@ bool addItem() {
 
 	return false;
 }
+bool removeItem() {
+	cout << "Select which item do you want to remove" << endl;
+	cout << "1 - Armor" << endl;
+	cout << "2 - Ring" << endl;
+	cout << "3 - Helmet" << endl;
+	cout << "4 - Boots" << endl;
+	cout << "5 - Belt" << endl;
+	cout << "6 - Sword" << endl;
+	cout << "7 - Shield" << endl;
+	cout << "0 - To Continue..." << endl << endl;
+	cin >> choice;
+	if (choice < 0 || choice > 7)
+	{
+		return false;
+	}
 
+	if (choice == 0)
+	{
+		return true;
+	}
+
+	bool found = false;
+	switch (choice)
+	{
+	case 1: 
+		
+		if (0 == aCharacter->getWornItemContainer()->getItems().size()) {
+			cout << "backpack is empty , cannot remove items" << endl;
+		} 
+		for (int i = 0; i < aCharacter->getWornItemContainer()->getItems().size(); i++) {
+			if ("Armor" == aCharacter->getWornItemContainer()->getItems().at(i)->getType()) {
+				aCharacter->getBackPackContainer()->addItem(aCharacter->getWornItemContainer()->removeItem("Armor"));
+				aCharacter->wearUpdate("remove");
+				aCharacter->printProfile();
+				found = true;
+				break;
+			}
+
+			if(!found) {
+				cout << "YOU DON'T HAVE THIS ITEM!" << endl;
+			}
+		}
+		break;
+	case 2: 
+		if (0 == aCharacter->getWornItemContainer()->getItems().size()) {
+			cout << "YOU DON'T HAVE THIS ITEM!" << endl;
+		}
+		for (int i = 0; i < aCharacter->getWornItemContainer()->getItems().size(); i++) {
+			if ("Ring" == aCharacter->getWornItemContainer()->getItems().at(i)->getType()) {
+				aCharacter->getBackPackContainer()->addItem(aCharacter->getWornItemContainer()->removeItem("Ring"));
+				aCharacter->wearUpdate("remove");
+				aCharacter->printProfile();
+				found = true;
+				break;
+			}
+			if (!found) {
+				cout << "YOU DON'T HAVE THIS ITEM!" << endl;
+			}
+		}
+		break;
+	case 3: 
+		if (0 == aCharacter->getWornItemContainer()->getItems().size()) {
+			cout << "YOU DON'T HAVE THIS ITEM!" << endl;
+		}
+		for (int i = 0; i < aCharacter->getWornItemContainer()->getItems().size(); i++) {
+			if ("Helmet" == aCharacter->getWornItemContainer()->getItems().at(i)->getType()) {
+				aCharacter->getBackPackContainer()->addItem(aCharacter->getWornItemContainer()->removeItem("Helmet"));
+				aCharacter->wearUpdate("remove");
+				aCharacter->printProfile();
+				found = true;
+				break;
+			}
+			if (!found) {
+				cout << "YOU DON'T HAVE THIS ITEM!" << endl;
+			}
+		}
+		break;
+	case 4: 
+		if (0 == aCharacter->getWornItemContainer()->getItems().size()) {
+			cout << "YOU DON'T HAVE THIS ITEM!" << endl;
+		}
+		for (int i = 0; i < aCharacter->getWornItemContainer()->getItems().size(); i++) {
+			if ("Boots" == aCharacter->getWornItemContainer()->getItems().at(i)->getType()) {
+				aCharacter->getBackPackContainer()->addItem(aCharacter->getWornItemContainer()->removeItem("Boots"));
+				aCharacter->wearUpdate("remove");
+				aCharacter->printProfile();
+				found = true;
+				break;
+			}
+			if (!found) {
+				cout << "YOU DON'T HAVE THIS ITEM!" << endl;
+			}
+		}
+		break;
+	case 5: 
+		if (0 == aCharacter->getWornItemContainer()->getItems().size()) {
+			cout << "YOU DON'T HAVE THIS ITEM!" << endl;
+		}
+		for (int i = 0; i < aCharacter->getWornItemContainer()->getItems().size(); i++) {
+			if ("Belt" == aCharacter->getWornItemContainer()->getItems().at(i)->getType()) {
+				aCharacter->getBackPackContainer()->addItem(aCharacter->getWornItemContainer()->removeItem("Belt"));
+				aCharacter->wearUpdate("remove");
+				aCharacter->printProfile();
+				found = true;
+				break;
+			}
+			if (!found) {
+				cout << "YOU DON'T HAVE THIS ITEM!" << endl;
+			}
+		}
+		break;
+	case 6: 
+		if (0 == aCharacter->getWornItemContainer()->getItems().size()) {
+			cout << "YOU DON'T HAVE THIS ITEM!" << endl;
+		}
+		for (int i = 0; i < aCharacter->getWornItemContainer()->getItems().size(); i++) {
+			if ("Sword" == aCharacter->getWornItemContainer()->getItems().at(i)->getType()) {
+				aCharacter->getBackPackContainer()->addItem(aCharacter->getWornItemContainer()->removeItem("Sword"));
+				aCharacter->wearUpdate("remove");
+				aCharacter->printProfile();
+				found = true;
+				break;
+			}
+			if (!found) {
+				cout << "YOU DON'T HAVE THIS ITEM!" << endl;
+			}
+		}
+		break;
+	case 7: 
+		if (0 == aCharacter->getWornItemContainer()->getItems().size()) {
+			cout << "YOU DON'T HAVE THIS ITEM!" << endl;
+		}
+		for (int i = 0; i < aCharacter->getWornItemContainer()->getItems().size(); i++) {
+			if ("Shield" == aCharacter->getWornItemContainer()->getItems().at(i)->getType()) {
+				aCharacter->getBackPackContainer()->addItem(aCharacter->getWornItemContainer()->removeItem("Shield"));
+				aCharacter->wearUpdate("remove");
+				aCharacter->printProfile();
+				found = true;
+				break;
+			}
+			if (!found) {
+				cout << "YOU DON'T HAVE THIS ITEM!" << endl;
+			}
+		}
+		break;
+	}
+
+	return false;
+}
 
 bool addItemDecision() {
 	cout << "Do you wish to add a new item?" << endl << "[1]  yes" << endl << "[2] no" << endl;
@@ -359,6 +507,22 @@ bool addItemDecision() {
 	if (choice == 1)
 	{
 		while (!addItem()) {}
+	}
+
+	return true;
+}
+
+bool removeItemDecision() {
+	cout << "Do you wish to remove an item?" << endl << "[1]  yes" << endl << "[2] no" << endl;
+	cin >> choice;
+	if (choice != 1 && choice != 2)
+	{
+		return false;
+	}
+
+	if (choice == 1)
+	{
+		while (!removeItem()) {}
 	}
 
 	return true;
@@ -387,6 +551,10 @@ int main() {
 
 	while (!addItemDecision()){
 		cout << "Please select a choice between the offered options" << endl;
+	}
+	while (!removeItemDecision()) {
+		cout << "Please select a choice between the offered options" << endl;
+
 	}
 	editor->current_map->displayMap();
 	moveCharacter();

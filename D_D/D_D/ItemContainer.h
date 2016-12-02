@@ -23,8 +23,8 @@ public:
 	ItemContainer::ItemContainer(vector<Item*> containeritems);
 	ItemContainer(vector<Item*> items, string name, string type);
 	bool ItemContainer::addItem(Item* anitem);
-	void ItemContainer::removeItem(Item* anitem);
-	Item ItemContainer::getItem(int itemId);
+	Item* ItemContainer::removeItem(string anitem);
+	Item* ItemContainer::getItem(int itemId);
 	vector<Item*> ItemContainer::getItems();
 	string ItemContainer::getType();
 	int ItemContainer::getSize();

@@ -93,21 +93,24 @@ bool ItemContainer::addItem(Item* anitem)
 
 //! Removes an item from the container
 //! @param anitem: the item to remove
-void ItemContainer::removeItem(Item* anitem)
+Item* ItemContainer::removeItem(string anitem)
 {
-	//if (type == "wornItems")
+	if (type == "wornItems")
 
-	//{
-	//	cout << "going to remove a worn item" << endl;
-	//	//aCharacter->getAbility(anitem->getAbilityName)->incScore(anitem->getEnchBonus());
-	//	cout << "update the character's ability" + anitem->getAbilityName() + " score ";
-	//	cout << " of -" + anitem->getEnchBonus()<<endl;
-	//	cout << " and the final score is " +// aCharacter->getAbility(anitem->getAbilityName)->getScore();
+	{
+		cout << "going to remove a worn item" << endl;
+		//aCharacter->getAbility(anitem->getAbilityName)->incScore(anitem->getEnchBonus());
+		//cout << "update the character's ability" + anitem->getAbilityName() + " score ";
+		//cout << " of -" + anitem->getEnchBonus()<<endl;
+		//cout << " and the final score is " + aCharacter->getAbility(anitem->getAbilityName)->getScore();
 
-	//}
-
-	int itemPosition = getItemPosition(anitem->getType());
+	}
+	int itemPosition = getItemPosition(anitem);
+	Item* object = items.at(itemPosition);
+	Item* copy = new Item(object->getType(), object->getId(), object->getEnchBonus(), object->getAbilityName());
 	items.erase(items.begin() + itemPosition);
+
+	return copy;
 
 }
 
@@ -115,11 +118,11 @@ void ItemContainer::removeItem(Item* anitem)
 //! method to return an Item by giving its unique id ItemContainer
 //! @param itemId : id of the Item to be extract from the ItemContainer
 //! @return : item with associated id, which was passed as argument to the method
-Item ItemContainer::getItem(int itemId)
+Item* ItemContainer::getItem(int itemId)
 {
 	for (int i = 0; i < items.size(); i++)
 		if (items[i]->getId() == itemId)
-			return *items[i];
+			return items[i];
 }
 
 //todo: retrieve a list of ID for an item type

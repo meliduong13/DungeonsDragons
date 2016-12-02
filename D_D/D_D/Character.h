@@ -25,9 +25,14 @@ public:
 	Character(string characterType, string characterClass, ItemContainer* backpack, ItemContainer* wornItems, ItemContainer* treasureChest, vector<Ability*> abilities, int damageBonus, 
 		int nbrOfAttacks, int armorClass, int hitPoints, int level, int colPos, int rowPos);
 	Character(){};
+
 	void setHitPoints(int level);
 	Ability* getAbility(string aName);
 	ItemContainer* getWornItemContainer() { return wornItems; }
+	ItemContainer* getBackPackContainer() { return backpack; }
+	ItemContainer* getTreasureBackPack() { return treasureChest; }
+	
+
 	void updateAbilities();
 	int calculatePB();
 	void wearUpdate(string addOrRemove);
@@ -38,7 +43,7 @@ public:
 	int getCol() { return colPos; };
 	ItemContainer *backpack;
 	ItemContainer *wornItems;
-	ItemContainer *tresureChest;
+	ItemContainer *treasureChest;
 	void setRow(int rw){ rowPos = rw; }
 	void setCol(int col){ colPos = col; }
 	void setCoordinates(int row, int col){ rowPos = row, colPos = col; }

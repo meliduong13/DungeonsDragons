@@ -9,7 +9,7 @@ Character::Character(string characterType, string characterClass, ItemContainer*
 	this->characterClass = characterClass;
 	this->backpack = backpack;
 	this->wornItems = wornItems;
-	this->tresureChest = treasureChest;
+	this->treasureChest = treasureChest;
 	this->abilities = abilities;
 	this->damageBonus = damageBonus;
 	this->nbrOfAttacks = nbrOfAttacks;
@@ -102,7 +102,7 @@ void Character::printProfile(){
 
 	vector<Item*> bp = wornItems->getItems();
 	vector<Item*> backpack_bp = backpack->getItems();
-	vector<Item*> treasure_bp = tresureChest->getItems();
+	vector<Item*> treasure_bp = treasureChest->getItems();
 
 	cout << "-------------------------------------------------------------------"<<endl;
 	cout << "USER PROFILE" << endl;
@@ -236,6 +236,6 @@ void Character::setBackPack() { //Added from a3
 }
 
 void Character::setTreasureChest() { //Added from a3
-	tresureChest = new ItemContainer("bag3", "treasureChest");
+	treasureChest = new ItemContainer("bag3", "treasureChest");
 }
 
