@@ -7,7 +7,11 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+#include "Nimble.h"
+#include "CharacterDirector.h"
 using namespace std;
+
+Character* make_player();
 
 int choice;
 int height, width;
@@ -22,10 +26,28 @@ bool exitWhile = false;
 bool exitFromSelOpt = false;
 
 string questName;
-Character *aCharacter = new Character();
+
+Character *aCharacter = make_player();
 Map *aMap = new Map();
 MapEditor *editor = new MapEditor();
 Item *myItem;
+
+
+Character* make_player()
+{
+	CharacterDirector chDirector;
+	int level = 1;
+	////Create the Concrete Builder Nimble
+	CharacterBuilder* nimble = new Nimble;
+	////Tell the CharacterDirector which Concrete Builder to use
+	chDirector.setCharacterBuilder(nimble);
+	////Tell the Director to construct
+	chDirector.constructCharacter(level, "friendly");
+	////We are getting the character of nimble
+	return chDirector.getCharacter();
+}
+
+
 void createNewMap() {
 	delete aMap;
 	cout << "Enter the quest name: " << endl;
@@ -61,6 +83,7 @@ bool chooseNewMap() {
 	aMap->trySetStartPoint(0, 0);
 	aMap->trySetEndPoint(width - 1, height - 1);
 	aMap->setCharacterAtStartingPoint();
+	editor->current_map->addActor("p", aCharacter);
 	editor->saveMap(editor->current_map->map_name);
 
 	return true;

@@ -24,7 +24,7 @@ protected:
 public:
 	Character(string characterType, string characterClass, ItemContainer* backpack, ItemContainer* wornItems, ItemContainer* treasureChest, vector<Ability*> abilities, int damageBonus, 
 		int nbrOfAttacks, int armorClass, int hitPoints, int level, int colPos, int rowPos);
-	Character();
+	Character(){};
 	void setHitPoints(int level);
 	Ability* getAbility(string aName);
 	ItemContainer* getWornItemContainer() { return wornItems; }
