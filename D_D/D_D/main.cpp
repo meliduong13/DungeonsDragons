@@ -372,9 +372,7 @@ int main() {
 		cout << " Invalid choice. Please select a choice between 1 and 2" << endl;
 	}
 
-	cout << "----------USER PROFILE----------" << endl;
-//	aCharacter->printProfile(); THIS DOES NOT WORK FIX!
-	cout << "----------USER PROFILE----------" << endl;
+	aCharacter->printProfile(); //THIS DOES NOT WORK FIX!
 
 	aMap->displayMap();
 

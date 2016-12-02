@@ -46,40 +46,48 @@ vector<Item*> ItemContainer::getItems()
 //!@return: boolean which indicates if true, the item has been successfully added, or false, the Item cannot be added because it has an invalid name
 bool ItemContainer::addItem(Item* anitem)
 {
-	string itemType = anitem->getType();
-	if ((itemType == "Helmet") || (itemType == "Armor") || (itemType == "Shield") || (itemType == "Ring") || (itemType == "Belt") || (itemType == "Boots") || (itemType == "Weapon"))
+  string itemType=anitem->getType();
+	for (int i = 0; i < items.size(); i++) 
 	{
-
+		if (items.at(i)->getType() == itemType) {
+			cout << "cannot add duplicate of " << anitem->getType() << endl;
+			return false;
+		}
+	}
+	if ((itemType == "Helmet") || (itemType == "Armor") || (itemType == "Shield") || (itemType == "Ring") || (itemType == "Belt") || (itemType == "Boots") || (itemType == "Sword"))
+	{
 		items.push_back(anitem);
-		//cout << " addItem->item " + anitem->getType() + " was added" << endl;
-
-		////if it is a wornItem, update the abilities of the player
-		//if (type == "wornItems")
-		//{
-		//	for (int i = 0; i < items.size(); i++)
-		//	{
-		//		for (int j = 0; j < aCharacter->getAbilities().size(); j++)
-		//		{
-
-		//			if (items[i]->chosenAbility() == aCharacter->getAbilities().at(j)->getName())
-		//			
-		//			{
-		//				aCharacter->getAbilities().at(j)->incScore(items[i]->getEnchBonus());
-		//				cout << "ability " + aCharacter->getAbilities().at(j)->getName() + " is increased by "
-		//					<< items[i]->getEnchBonus() << " to " ;
-		//				cout << aCharacter->getAbilities().at(j)->getScore() << endl;
-		//			}
-		//		}
-		//	}
-		//}
-		//
 		return true;
-	}//outer if
+	}
+		
 	else
 	{
-		cout << "item could not be added";
+		cout << "Invalid item. Item could not be added";
 		return false;
 	}
+
+	//cout << " addItem->item " + anitem->getType() + " was added" << endl;
+
+	////if it is a wornItem, update the abilities of the player
+	//if (type == "wornItems")
+	//{
+	//	for (int i = 0; i < items.size(); i++)
+	//	{
+	//		for (int j = 0; j < aCharacter->getAbilities().size(); j++)
+	//		{
+
+	//			if (items[i]->chosenAbility() == aCharacter->getAbilities().at(j)->getName())
+	//			
+	//			{
+	//				aCharacter->getAbilities().at(j)->incScore(items[i]->getEnchBonus());
+	//				cout << "ability " + aCharacter->getAbilities().at(j)->getName() + " is increased by "
+	//					<< items[i]->getEnchBonus() << " to " ;
+	//				cout << aCharacter->getAbilities().at(j)->getScore() << endl;
+	//			}
+	//		}
+	//	}
+	//}
+	//
 
 }//addItem
 

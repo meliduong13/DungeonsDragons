@@ -75,8 +75,8 @@ void Character::removeUpdate(Item *item) {
 	}*/
 	//TESTING Commented Code
 	//itemList.erase(itemList.begin()+itemPosition);
-	getAbility(item->getAbilityName())->incScore(-(item->getEnchBonus()));
-	getAbility(item->getAbilityName())->calculateModifier();
+	/*getAbility(item->getAbilityName())->incScore(-(item->getEnchBonus()));
+	getAbility(item->getAbilityName())->calculateModifier();*/
 	//cout << "UPDATING ABILITIES ->update the character's ability" + item->getAbilityName() + " score ";
 	//	cout << " of -" + item->getEnchBonus() << endl;
 	//cout << " and the final score is " << getAbility(item->getAbilityName())->getScore();
@@ -104,15 +104,18 @@ void Character::printProfile(){
 	vector<Item*> backpack_bp = backpack->getItems();
 	vector<Item*> treasure_bp = tresureChest->getItems();
 
+	cout << "-------------------------------------------------------------------"<<endl;
 	cout << "USER PROFILE" << endl;
-	cout << "level : " << level << endl;
-	cout << "hitPoints : " << hitPoints << endl;
-	cout << "maxHitDice : " << maxHitDice << endl;
+	cout << "-------------------------------------------------------------------" << endl;
+
+	cout << "level | " << level << endl;
+	cout << "hitPoints | " << hitPoints << endl;
+	cout << "maxHitDice | " << maxHitDice << endl;
 	//loop through all character's abilities
 	for (int i = 0; i < abilities.size(); i++)
 	{
-		cout << "ability " << abilities[i]->getName() << " score : ";
-		cout << abilities[i]->getScore() << " modifier : " << abilities[i]->getModifier() << endl;
+		cout << "ability -> " << abilities[i]->getName() << " | score  ";
+		cout << abilities[i]->getScore() << " | modifier  " << abilities[i]->getModifier() <<" | " << endl;
 	}
 	if (bp.size() == 0)
 	{
@@ -122,16 +125,16 @@ void Character::printProfile(){
 
 	else
 	{
-		cout << "**********************EMPTY WORN ITEM****************" << endl;
+		cout << "**********************POPULATED WORN ITEM****************" << endl;
 		//loop through all items of wornItems itemContainer
 		for (int i = 0; i < bp.size(); i++)
 		{
-			cout << "ID : " << bp[i]->getId() << endl;
-			cout << "item type (name) : " << bp[i]->getType() << endl;
-			cout << "chosen ability toe enchanted by the item : " << bp[i]->getAbilityName() << endl;
-			cout << "enchanted bonus is : " << bp[i]->getEnchBonus() << endl;
+			cout << "ID | " << bp[i]->getId() << endl;
+			cout << "item type (name) | " << bp[i]->getType() << endl;
+			cout << "chosen ability to be enchanted by the item | " << bp[i]->getAbilityName() << endl;
+			cout << "enchanted bonus is | " << bp[i]->getEnchBonus() << endl;
 		}
-		cout << "**********************END OF EMPTY WORN ITEM****************" << endl;
+		cout << "*********************END OF POPULATED WORN ITEM****************" << endl;
 
 
 	}//else
@@ -144,16 +147,16 @@ void Character::printProfile(){
 
 	else
 	{
-		cout << "**********************EMPTY BACKPACK ITEM****************" << endl;
+		cout << "**********************POPULATED BACKPACK ITEM****************" << endl;
 		//loop through all items of wornItems itemContainer
 		for (int i = 0; i < backpack_bp.size(); i++)
 		{
-			cout << "ID : " << backpack_bp[i]->getId() << endl;
-			cout << "item type (name) : " << backpack_bp[i]->getType() << endl;
-			cout << "chosen ability toe enchanted by the item : " << backpack_bp[i]->getAbilityName() << endl;
-			cout << "enchanted bonus is : " << backpack_bp[i]->getEnchBonus() << endl;
+			cout << "ID | " << backpack_bp[i]->getId() << endl;
+			cout << "item type (name) | " << backpack_bp[i]->getType() << endl;
+			cout << "chosen ability to be enchanted by the item | " << backpack_bp[i]->getAbilityName() << endl;
+			cout << "enchanted bonus is | " << backpack_bp[i]->getEnchBonus() << endl;
 		}
-		cout << "**********************END OF BACKPACK ITEM****************" << endl;
+		cout << "**********************END OF POPULATED ITEM****************" << endl;
 	}//else
 
 
@@ -166,19 +169,22 @@ void Character::printProfile(){
 
 	else
 	{
-		cout << "**********************EMPTY TREASURE ITEM****************" << endl;
+		cout << "**********************POPULATED TREASURE ITEM****************" << endl;
 		//loop through all items of wornItems itemContainer
 		for (int i = 0; i < treasure_bp.size(); i++)
 		{
-			cout << "ID : " << treasure_bp[i]->getId() << endl;
-			cout << "item type (name) : " << treasure_bp[i]->getType() << endl;
-			cout << "chosen ability toe enchanted by the item : " << treasure_bp[i]->getAbilityName() << endl;
-			cout << "enchanted bonus is : " << treasure_bp[i]->getEnchBonus() << endl;
+			cout << "ID | " << treasure_bp[i]->getId() << endl;
+			cout << "item type (name) | " << treasure_bp[i]->getType() << endl;
+			cout << "chosen ability to be enchanted by the item | " << treasure_bp[i]->getAbilityName() << endl;
+			cout << "enchanted bonus is | " << treasure_bp[i]->getEnchBonus() << endl;
 		}
-		cout << "**********************END OF TREASURE ITEM****************" << endl;
+		cout << "**********************TEND OF POPULATED TREASURE ITEM****************" << endl;
 
 
 	}//else
+	cout << "-------------------------------------------------------------------" << endl;
+	cout << "END OF USER PROFILE" << endl;
+	cout << "-------------------------------------------------------------------" << endl;
 
 }//end of function
 

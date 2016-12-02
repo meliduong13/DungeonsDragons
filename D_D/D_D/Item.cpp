@@ -79,8 +79,8 @@ void Item::createAbilityVector()
 		abilityVector.push_back("Dexterity");
 	}
 
-	else if (type == "Weapon"){
-		cout << "Weapon Created" << endl;
+	else if (type == "Sword"){
+		cout << "Sword Created" << endl;
 		abilityVector.push_back("AttackBonus");
 		abilityVector.push_back("DamageBonus");
 	}
