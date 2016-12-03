@@ -173,7 +173,6 @@ void fillCellHandler() {
 		enemy = make_player();
 		enemy->setCol(x);
 		enemy->setRow(y);
-		aMap->fillCell(x, y, obj);
 		editor->current_map->addActor("a", enemy);
 		editor->saveMap(editor->current_map->map_name);
 		system("CLS");
@@ -240,14 +239,19 @@ bool addMapObject() {
 
 
 void moveCharacter(string code, Character* aCharacter){
-	string enemiesNear = "";
-	//enemiesNear = aMap->canAttack(code);
+	vector<char> surroundedEnemies;
+	surroundedEnemies = aMap->getSurroundingEnemies();
+	bool canAttack = false;
+	if (surroundedEnemies.size() > 0) {
+		canAttack = true;
+	}
 	do{
 		cout << "Move the character again" << endl;
 		cout << "8 - Move up" << endl;
 		cout << "4 - Move left" << endl;
 		cout << "5 - Move down" << endl;
 		cout << "6 - Move right" << endl;
+		if(canAttack)
 		cout << "7 - Attack" << endl;
 		cout << "0 - Save game" << endl;
 		cin >> choice;
@@ -277,11 +281,11 @@ void moveCharacter(string code, Character* aCharacter){
 			aMap->displayMap();
 
 		}
-		if (choice == 7 || enemiesNear != "") {
+		if (choice == 7 && canAttack) {
 			cout << "Who do you wish to attack?" << endl;
 			string attackChoice;
-			for (int i = 0; i < enemiesNear.length(); i++) {
-				enemiesNear[i];
+			for (int i = 0; i < surroundedEnemies.size(); i++) {
+				cout << surroundedEnemies.at(i) << endl;
 			}
 			cin >> attackChoice;
 			aCharacter->attack(aMap->getActor(attackChoice));

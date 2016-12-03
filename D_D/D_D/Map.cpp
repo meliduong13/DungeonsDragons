@@ -336,25 +336,28 @@ bool Map::enemyMoveLeft() {
 	return true;
 }
 
-string Map::canAttack(string code) {
-	string enemiesNear = "";
-	bool a = this->map[actors[code]->getCol() + 1][actors[code]->getRow()] == 'a';
-	bool b = this->map[actors[code]->getCol() - 1][actors[code]->getRow()] == 'a';
-	bool c = this->map[actors[code]->getCol()][actors[code]->getRow() + 1] == 'a';
-	bool d = this->map[actors[code]->getCol()][actors[code]->getRow() - 1] == 'a';
-	if (a || b || c || d) 
-	/*if (map[actors[code]->getCol() + 1][actors[code]->getRow()] == 'a' || 
-		map[actors[code]->getCol() - 1][actors[code]->getRow()] == 'a')
-		map[actors[code]->getCol()][actors[code]->getRow() + 1] == 'a' || 
-		map[actors[code]->getCol()][actors[code]->getRow() - 1] == 'a')
-		*/
-	{
-		return enemiesNear;
-	}
-	else { return ""; }
-	
-	return "";
-}
+//string Map::canAttack(string code) {
+//	string enemiesNear = "";
+//	for (int i = 0; i < actors.size(); i++) {
+//		this->map[actors[code]->getCol() + 1][actors[code]->getRow()] == 
+//	}
+//	bool a = this->map[actors[code]->getCol() + 1][actors[code]->getRow()] == 'a';
+//	bool b = this->map[actors[code]->getCol() - 1][actors[code]->getRow()] == 'a';
+//	bool c = this->map[actors[code]->getCol()][actors[code]->getRow() + 1] == 'a';
+//	bool d = this->map[actors[code]->getCol()][actors[code]->getRow() - 1] == 'a';
+//	if (a || b || c || d) 
+//	/*if (map[actors[code]->getCol() + 1][actors[code]->getRow()] == 'a' || 
+//		map[actors[code]->getCol() - 1][actors[code]->getRow()] == 'a')
+//		map[actors[code]->getCol()][actors[code]->getRow() + 1] == 'a' || 
+//		map[actors[code]->getCol()][actors[code]->getRow() - 1] == 'a')
+//		*/
+//	{
+//		return enemiesNear;
+//	}
+//	else { return ""; }
+//	
+//	return "";
+//}
 
 //! Displays the map and clears the map before displaying
 //! the character at a new position

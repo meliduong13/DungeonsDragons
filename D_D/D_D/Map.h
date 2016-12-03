@@ -59,6 +59,7 @@ public:
 	bool moveUp(string code);
 	bool enemyMoveDown();
 	void setEnemyAtStartingPoint();
+	vector<char> getSurroundingEnemies();
 	bool enemyMoveRight();
 	bool enemyMoveLeft();
 	string canAttack(string code);

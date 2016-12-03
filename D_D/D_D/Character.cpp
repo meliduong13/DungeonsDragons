@@ -69,8 +69,13 @@ void Character::wearUpdate(string addOrRemove) {
 bool Character::attack(Character* target) {
 	Dice aDice = Dice();
 	int diceResult = 0;
+	int damage = 0;
 	int attackDiceResult = 0;
 	diceResult = aDice.roll("1d20[+" + to_string(attackBonus.at(0)) + "]");
+	cout << "Rolled: " << diceResult - attackBonus.at(0) << endl;
+	cout << "Attack Bonus: " << attackBonus.at(0) << endl;
+	cout << "Total: " << diceResult << endl;
+	cout << "Armor class: " << target->armorClass << endl;
 	if (diceResult < target->armorClass) {
 		cout << "The target has more armor class points, attack not hit!" << endl;
 		return false;
@@ -92,7 +97,11 @@ bool Character::attack(Character* target) {
 		}
 	}
 	cout << "Attack!" << endl;
-	target->setHP(target->getHitPoints() - (attackDiceResult + this->getAttackBonus().at(0)));
+	cout << "Hp of the target before the attack: " << target->getHitPoints() << endl;
+	damage = attackDiceResult + this->getAttackBonus().at(0);
+	target->setHP(target->getHitPoints() - damage);
+	cout << "Damage done: " << damage << endl;
+	cout << "Hp of the target after the attack: " << target->getHitPoints() << endl;
 	return true;
 }
 
@@ -230,7 +239,7 @@ void Character::setAbilities() { //Added from a3
 
 void Character::setArmorClass() { //Added from a3
 	Dice aDice;
-	armorClass = 11 + aDice.roll("1d20[+" + to_string(getAbility("Dexterity")->getScore()) + "]") + calculatePB();
+	armorClass = 11 + aDice.roll("1d8[+0]"); //+ to_string(getAbility("Dexterity")->getScore()) + "]");
 }
 
 void Character::setDamageBonus() { //Added from a3
