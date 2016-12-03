@@ -16,6 +16,8 @@ protected:
 	vector<Item*>items;
 
 public:
+	int xCoord;
+	int yCoord;
 	string name;
 	ItemContainer::ItemContainer();
 	ItemContainer::~ItemContainer();

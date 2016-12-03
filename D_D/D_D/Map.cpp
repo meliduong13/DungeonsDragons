@@ -10,16 +10,22 @@ using namespace std;
 //! @brief Implementation file for the Map class  
 //!
 
-void Map::addActor(string actorCode, Character* character)
+void Map::addItemContainer(string ID, ItemContainer* itemContainer)
 {
-	actors[actorCode] = character;
-	fillCell(character->getRow(), character->getRow(), actorCode.at(0));
+	chests[ID] = itemContainer;
 }
 
 void Map::removeActor(string actorCode)
 {
 	actors.erase(actorCode);
 }
+
+void Map::addActor(string actorCode, Character* character)
+{
+	actors[actorCode] = character;
+	fillCell(character->getRow(), character->getRow(), actorCode.at(0));
+}
+
 
 Map::Map()
 {

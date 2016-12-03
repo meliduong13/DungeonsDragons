@@ -9,6 +9,7 @@
 #include <ctime>
 #include "Nimble.h"
 #include "CharacterDirector.h"
+#include <String>
 
 using namespace std;
 
@@ -32,6 +33,9 @@ Character *aCharacter = make_player();
 Map *aMap = new Map();
 MapEditor *editor = new MapEditor();
 Item *myItem;
+string one="";
+string two = "";
+string aname = "";
 
 
 Character* make_player()
@@ -130,7 +134,6 @@ bool startNewGame() {
 	return true;
 } //1
 
-
 void fillCellHandler() {
 	switch (choice)
 	{
@@ -140,8 +143,8 @@ void fillCellHandler() {
 		aMap->displayMap();
 		break;
 
-	case 2: obj = 'o';
-		aMap->fillCell(x, y, obj);
+	case 2: obj = 'o';//adding chest
+		
 		system("CLS");
 		aMap->displayMap();
 		break;
@@ -163,10 +166,60 @@ void fillCellHandler() {
 			cout << "Your last wall coordinate does not offer any valid path" << endl;
 		}
 		break;
-	case 4: obj = 'c';
+	case 4: obj = 'c';//adding a chest
+		//ItemContainer name = new ItemContainer();
 		aMap->fillCell(x, y, obj);
+		one = to_string(x);
+		two = to_string(y);
+		aname = one+two;
+		aMap->addItemContainer(aname, new ItemContainer());
+		do {
+			do {
+				cout << "Select which item do you want to add to chest" << endl;
+				cout << "1 - Armor" << endl;
+				cout << "2 - Ring" << endl;
+				cout << "3 - Helmet" << endl;
+				cout << "4 - Boots" << endl;
+				cout << "5 - Belt" << endl;
+				cout << "6 - Sword" << endl;
+				cout << "7 - Shield" << endl;
+				cout << "8 - Nothing more to add" << endl;
+				cin >> choice;
+			} while (choice < 0 || choice > 8);//do while
+
+			switch (choice)
+			{
+			case 1: 
+				aMap->getChests()[aname]->addItem(new Item("Armor"));
+				break;
+			case 2: 
+				aMap->getChests()[aname]->addItem(new Item("Ring"));
+				break;
+			case 3: 
+				aMap->getChests()[aname]->addItem(new Item("Helmet"));
+				break;
+			case 4:
+				aMap->getChests()[aname]->addItem(new Item("Boots"));
+				break;
+			case 5: 
+				aMap->getChests()[aname]->addItem(new Item("Belt"));
+				break;
+			case 6: 
+				aMap->getChests()[aname]->addItem(new Item("Sword"));
+				break;
+			case 7: 
+				aMap->getChests()[aname]->addItem(new Item("Shield"));
+				break;
+			case 8: break;
+			}
+		} while (choice != 8);// if you do not want to add anything anymore
 		system("CLS");
 		aMap->displayMap();
+		cout << "---------------ADDED CHEST "<<aname <<" CONTAINS------------------" << endl;
+		for (int i = 0; i < aMap->getChestsAsList().at(0)->getItems().size(); i++) {
+			cout << "--> " << aMap->getChestsAsList().at(0)->getItems().at(i)->getType() << endl;
+		}
+		cout << "---------------ADDED CHEST " << aname << " CONTAINS------------------"<<endl;
 		break;
 
 	case 5: obj = 'a';
@@ -262,13 +315,13 @@ void moveCharacter(string code, Character* aCharacter){
 			aMap->displayMap();
 
 		}
-		else if (choice == 5){
+		else if (choice == 5) {
 			system("CLS");
 			aMap->moveDown(code);
 			aMap->displayMap();
 
 		}
-		else if (choice == 6){
+		else if (choice == 6) {
 			system("CLS");
 			aMap->moveRight(code);
 			aMap->displayMap();
@@ -302,6 +355,8 @@ void moveCharacter(string code, Character* aCharacter){
 		}
 	} while (true);
 }
+
+
 
 bool addItem() {
 	cout << "Select which item do you want to create" << endl;
@@ -389,11 +444,11 @@ bool removeItem() {
 	bool found = false;
 	switch (choice)
 	{
-	case 1: 
-		
+	case 1:
+
 		if (0 == aCharacter->getWornItemContainer()->getItems().size()) {
 			cout << "backpack is empty , cannot remove items" << endl;
-		} 
+		}
 		for (int i = 0; i < aCharacter->getWornItemContainer()->getItems().size(); i++) {
 			if ("Armor" == aCharacter->getWornItemContainer()->getItems().at(i)->getType()) {
 				aCharacter->getBackPackContainer()->addItem(aCharacter->getWornItemContainer()->removeItem("Armor"));
@@ -403,12 +458,12 @@ bool removeItem() {
 				break;
 			}
 
-			if(!found) {
+			if (!found) {
 				cout << "YOU DON'T HAVE THIS ITEM!" << endl;
 			}
 		}
 		break;
-	case 2: 
+	case 2:
 		if (0 == aCharacter->getWornItemContainer()->getItems().size()) {
 			cout << "YOU DON'T HAVE THIS ITEM!" << endl;
 		}
@@ -425,7 +480,7 @@ bool removeItem() {
 			}
 		}
 		break;
-	case 3: 
+	case 3:
 		if (0 == aCharacter->getWornItemContainer()->getItems().size()) {
 			cout << "YOU DON'T HAVE THIS ITEM!" << endl;
 		}
@@ -442,7 +497,7 @@ bool removeItem() {
 			}
 		}
 		break;
-	case 4: 
+	case 4:
 		if (0 == aCharacter->getWornItemContainer()->getItems().size()) {
 			cout << "YOU DON'T HAVE THIS ITEM!" << endl;
 		}
@@ -459,7 +514,7 @@ bool removeItem() {
 			}
 		}
 		break;
-	case 5: 
+	case 5:
 		if (0 == aCharacter->getWornItemContainer()->getItems().size()) {
 			cout << "YOU DON'T HAVE THIS ITEM!" << endl;
 		}
@@ -476,7 +531,7 @@ bool removeItem() {
 			}
 		}
 		break;
-	case 6: 
+	case 6:
 		if (0 == aCharacter->getWornItemContainer()->getItems().size()) {
 			cout << "YOU DON'T HAVE THIS ITEM!" << endl;
 		}
@@ -493,7 +548,7 @@ bool removeItem() {
 			}
 		}
 		break;
-	case 7: 
+	case 7:
 		if (0 == aCharacter->getWornItemContainer()->getItems().size()) {
 			cout << "YOU DON'T HAVE THIS ITEM!" << endl;
 		}
@@ -568,7 +623,7 @@ int main() {
 		cout << "Invalid Choice!" << endl;
 	}
 
-	while (!addItemDecision()){
+	while (!addItemDecision()) {
 		cout << "Please select a choice between the offered options" << endl;
 	}
 	while (!removeItemDecision()) {
@@ -600,54 +655,45 @@ int main() {
 */
 
 //old main
-/* 
+/*
 #include "Ability.h"
 #include "Character.h"
 #include "ItemContainer.h"
 #include "Item.h"
-
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
 using namespace std;
-
-
 int main() {
-	
-	Character* aCharacter = new Character();
-	cout << "*****************************When we CREATE new character : " << endl;
-	aCharacter->printProfile();
-	Item* i1 = new Item("Ring");
-	Item* i2 = new Item("Helmet");
 
-	cout << endl;
+Character* aCharacter = new Character();
+cout << "*****************************When we CREATE new character : " << endl;
+aCharacter->printProfile();
+Item* i1 = new Item("Ring");
+Item* i2 = new Item("Helmet");
+cout << endl;
+cout << "******************************When we CREATE a new item which is a \'Ring\' : " << endl;
+aCharacter->getWornItemContainer()->addItem(i1);
+aCharacter->printProfile();
+cout << "******************************When we CREATE a new item which is a \'Helmet\' : " << endl;
+aCharacter->getWornItemContainer()->addItem(i2);
+aCharacter->printProfile();
+cout << endl;
+cout << "***************************When we ADD a new item which is a \'Ring\' & \'Helmet\' : " << endl;
+aCharacter->printProfile();
+aCharacter->wearUpdate("add");
+cout << endl;
+cout << "******************************When we UPDATE the score after wearing ring & helmet : " << endl;
+aCharacter->printProfile();
+cout << endl;
+cout << "***************************When we REMOVE a new item which is a \'Ring\' : " << endl;
+aCharacter->getWornItemContainer()->removeItem(i1);
+aCharacter->wearUpdate("remove");
+aCharacter->printProfile();
+cout << "***************************When we REMOVE a new item which is a \'Helmet\' : " << endl;
+aCharacter->getWornItemContainer()->removeItem(i2);
+aCharacter->wearUpdate("remove");
+aCharacter->printProfile();
 
-	cout << "******************************When we CREATE a new item which is a \'Ring\' : " << endl;
-	aCharacter->getWornItemContainer()->addItem(i1);
-	aCharacter->printProfile();
-	cout << "******************************When we CREATE a new item which is a \'Helmet\' : " << endl;
-	aCharacter->getWornItemContainer()->addItem(i2);
-	aCharacter->printProfile();
-
-	cout << endl;
-
-	cout << "***************************When we ADD a new item which is a \'Ring\' & \'Helmet\' : " << endl;
-	aCharacter->printProfile();
-	aCharacter->wearUpdate("add");
-
-	cout << endl;
-
-	cout << "******************************When we UPDATE the score after wearing ring & helmet : " << endl;
-	aCharacter->printProfile();
-	cout << endl;
-	cout << "***************************When we REMOVE a new item which is a \'Ring\' : " << endl;
-	aCharacter->getWornItemContainer()->removeItem(i1);
-	aCharacter->wearUpdate("remove");
-	aCharacter->printProfile();
-	cout << "***************************When we REMOVE a new item which is a \'Helmet\' : " << endl;
-	aCharacter->getWornItemContainer()->removeItem(i2);
-	aCharacter->wearUpdate("remove");
-	aCharacter->printProfile();
-	
 }
 */
