@@ -23,7 +23,14 @@ private:
 public:
 	Map* current_map;
 	bool createMap(int hight, int width, std::string map_name);
+	Item* parseItem(ifstream* myfile);
+	vector<Item*> parseItemVector(ifstream* myfile);
+	ItemContainer* parseItemContainer(ifstream* myfile);
+	Ability* parseAbility(ifstream* myfile);
+	vector<Ability*> parseAbilityVector(ifstream* myfile);
+	Character* parseCharacter(ifstream* myfile);
 	bool loadMap(std::string mapName);
+	void saveChests(ofstream* myfile);
 	bool saveMap(std::string mapName);
 	std::set<std::string> getMaps();
 };

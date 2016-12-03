@@ -7,6 +7,7 @@
 //! @file
 //! @brief Implementation file for the MapEditor class
 
+using namespace std;
 
 void MapEditor::saveItem(Item* item, ofstream* myfile)
 {
@@ -20,6 +21,8 @@ void MapEditor::saveItemContainer(ofstream* myfile, ItemContainer* item_containe
 {
 	*myfile << item_container->name << "\n";
 	*myfile << item_container->getType() << "\n";
+	*myfile << item_container->xCoord << "\n";
+	*myfile << item_container->yCoord << "\n";
 	vector<Item*> items = item_container->getItems();
 	*myfile << items.size() << "\n";
 	for (int i = 0; i<items.size(); i++)
@@ -64,6 +67,18 @@ void MapEditor::saveCharacters(ofstream* myfile)
 	}
 }
 
+void MapEditor::saveChests(ofstream* myfile)
+{
+	int size = current_map->getChests().size();
+	*myfile << size << "\n";
+	for (auto const& ent1 : current_map->getChests())
+	{
+		*myfile << ent1.first << "\n";
+		ItemContainer* item_container = ent1.second;
+		saveItemContainer(myfile, item_container);
+	}
+}
+
 //! Creates the map and saves it to a file 
 //! @param height: the height of the map
 //! @param width: the width of the map
@@ -72,6 +87,124 @@ bool MapEditor::createMap(int hight, int width, std::string map_name)
 {
 	current_map = new Map(hight, width, map_name);
 	return saveMap(map_name);
+}
+
+Item* MapEditor::parseItem(ifstream* myfile)
+{
+	string line; 
+
+	string type;
+	int id;
+	int enchBonus;
+	string abilityName;
+
+	getline(*myfile, line);
+	type = line;
+
+	getline(*myfile, line);
+	id = atoi(line.c_str());
+
+	getline(*myfile, line);
+	enchBonus = atoi(line.c_str());
+
+	getline(*myfile, line);
+	abilityName = line;
+
+	return new Item(type, id, enchBonus, abilityName);
+}
+
+vector<Item*> MapEditor::parseItemVector(ifstream* myfile)
+{
+	vector<Item*> items;
+	string line; 
+	getline(*myfile, line);
+	int size = atoi(line.c_str());
+	for (int i = 0; i < size; i++)
+	{
+		Item *item = parseItem(myfile);
+		items.push_back(item);
+	}
+
+	return items;
+}
+
+ItemContainer* MapEditor::parseItemContainer(ifstream* myfile)
+{
+	string line;
+	getline(*myfile, line);
+	string name = line;
+	getline(*myfile, line);
+	string type = line;
+	getline(*myfile, line);
+	int xCoord = atoi(line.c_str());
+	getline(*myfile, line);
+	int yCoord = atoi(line.c_str());
+	vector<Item*> items = parseItemVector(myfile);
+	return new ItemContainer(items, name, type, xCoord, yCoord);
+}
+
+Ability* MapEditor::parseAbility(ifstream* myfile)
+{
+	string line;
+
+	string name;
+	int score;
+	float modifiier;
+
+	getline(*myfile, line);
+	name = line;
+	getline(*myfile, line);
+	score = atoi(line.c_str());
+	getline(*myfile, line);
+	modifiier = atof(line.c_str());
+
+	return new Ability(name, score, modifiier);
+}
+
+vector<Ability*> MapEditor::parseAbilityVector(ifstream* myfile)
+{
+	vector<Ability*> abilities;
+	string line; 
+	
+	getline(*myfile, line);
+	int size = atoi(line.c_str());
+	for (int i = 0; i < size; i++)
+	{
+		Ability *ability = parseAbility(myfile);
+		abilities.push_back(ability);
+	}
+
+	return abilities;
+}
+
+Character* MapEditor::parseCharacter(ifstream* myfile)
+{
+	std::string line;
+	getline(*myfile, line);
+	string characterType = line; 
+	getline(*myfile, line);
+	string characterClass = line;
+	ItemContainer* backpack = parseItemContainer(myfile);
+	ItemContainer* wornItems = parseItemContainer(myfile);
+	ItemContainer* treasureChest = parseItemContainer(myfile);
+	vector<Ability*> abilities = parseAbilityVector(myfile);
+	getline(*myfile, line);
+	int damageBonus = atoi(line.c_str());
+	getline(*myfile, line);
+	int numberOfAttacks = atoi(line.c_str());
+	getline(*myfile, line);
+	int armorClass = atoi(line.c_str());
+	getline(*myfile, line);
+	int hitPoints = atoi(line.c_str());
+	getline(*myfile, line);
+	int level = atoi(line.c_str());
+	getline(*myfile, line);
+	int colPos = atoi(line.c_str());
+	getline(*myfile, line);
+	int rowPos = atoi(line.c_str());
+
+	return new Character(characterType, characterClass, backpack, wornItems, treasureChest, 
+		abilities, damageBonus, numberOfAttacks, armorClass, hitPoints, level, colPos, rowPos);
 }
 
 //! Loads the map from a file
@@ -115,6 +248,26 @@ bool MapEditor::loadMap(std::string mapName)
 		current_map->trySetStartPoint(startx, starty);
 		current_map->trySetEndPoint(endx, endy);
 
+		//starting on the character
+		std::getline(myfile, line);
+		int numOfCharacter = atoi(line.c_str());
+		for (int i = 0; i < numOfCharacter; i++)
+		{
+			std::getline(myfile, line);
+			string code = line;
+			Character* character = parseCharacter(&myfile);
+			current_map->addActor(code, character);
+		}
+		getline(myfile, line);
+		int numOfChests = atoi(line.c_str());
+		for (int i = 0; i < numOfChests; i++)
+		{
+			getline(myfile, line);
+			string code = line;
+			ItemContainer *item_container = parseItemContainer(&myfile);
+			current_map->addItemContainer(code, item_container);
+		}
+
 		myfile.close();
 		return true;
 	}
@@ -135,9 +288,9 @@ bool MapEditor::saveMap(std::string mapName)
 	{
 		myfile << current_map->map_name << "\n";
 		myfile << current_map->mapWidth << "\n" << current_map->mapHeight << "\n";
-		for (int i = 0; i < current_map->mapHeight; ++i)
+		for (int i = 0; i < current_map->mapHeight; i++)
 		{
-			for (int j = 0; j < current_map->mapWidth; ++j)
+			for (int j = 0; j < current_map->mapWidth; j++)
 			{
 				myfile << current_map->getCharacter(i, j);
 			}
@@ -145,6 +298,7 @@ bool MapEditor::saveMap(std::string mapName)
 		myfile << "\n";
 		myfile << current_map->start_point_x << "\n" << current_map->start_point_y << "\n" << current_map->end_point_x << "\n" << current_map->end_point_y << "\n";
 		saveCharacters(&myfile);
+		saveChests(&myfile);
 
 		myfile.close();
 
