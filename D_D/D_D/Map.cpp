@@ -277,6 +277,34 @@ void Map::setEnemyAtStartingPoint()
 	enemy_y = mapWidth - 1;
 }
 
+vector<char> Map::getSurroundingEnemies()
+{
+	vector<char> enemyCodes;
+	int x[2];
+	int y[2];
+	x[0] = ((actors["p"]->getRow() == 0) ? actors["p"]->getRow() : actors["p"]->getRow() - 1);
+	x[1] = ((actors["p"]->getRow() == mapWidth - 1) ? actors["p"]->getRow() : actors["p"]->getRow() + 1);
+	y[0] = ((actors["p"]->getCol() == 0) ? actors["p"]->getCol() : actors["p"]->getCol() - 1);
+	y[1] = ((actors["p"]->getCol() == mapHeight - 1) ? actors["p"]->getCol() : actors["p"]->getCol() + 1);
+
+	for (int i = 0; i < 2; ++i)
+	{
+		for (int j = 0; j < 2; ++j)
+		{
+			if (!(actors["p"]->getRow() == x[i] && actors["p"]->getCol() == y[j]))
+			{
+				if (map[x[i]][y[j]] != ' ' || map[x[i]][y[j]] != 'w' || map[x[i]][y[j]] != 'c')
+				{
+					enemyCodes.push_back(map[x[i]][y[j]]);
+				}
+				
+			}
+		}
+	}
+
+	return enemyCodes;
+}
+
 //! Moves the character right in the map
 //! @return a boolean indicating that the character can move right 
 bool Map::enemyMoveRight() {
