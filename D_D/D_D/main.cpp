@@ -243,7 +243,6 @@ void fillCellHandler() {
 		enemyNum++;
 		enemy->setCol(x);
 		enemy->setRow(y);
-		GameLogger::printEvent(enemy->printProfile());
 		editor->current_map->addActor(enemyCode, enemy);
 		editor->saveMap(editor->current_map->map_name);
 		system("CLS");
@@ -316,6 +315,7 @@ void moveCharacter(string code, Character* aCharacter){
 	do{
 		surroundedEnemies = aMap->getSurroundingEnemies();
 		canAttack = surroundedEnemies.size() > 0;
+		aCharacter->printProfile();
 		cout << "Move the character again" << endl;
 		cout << "8 - Move up" << endl;
 		cout << "4 - Move left" << endl;
@@ -325,6 +325,8 @@ void moveCharacter(string code, Character* aCharacter){
 		cout << "7 - Attack" << endl;
 		cout << "9 - disable the logger" << endl;
 		cout << "10 - enable the logger" << endl;
+		cout << "11 - disable the inventory view" << endl;
+		cout << "12 - enable the inventory view" << endl;
 		cout << "0 - Save game" << endl;
 		cin >> choice;
 		if (choice == 4)
@@ -363,7 +365,8 @@ void moveCharacter(string code, Character* aCharacter){
 			GameLogger::printEvent("disabling the logger");
 			GameLogger::enabled = false;
 			system("CLS");
-			cout << "logger disabled";
+			cout << "logger disabled" << endl;
+			aMap->displayMap();
 		}
 
 		if (choice == 10)
@@ -372,7 +375,26 @@ void moveCharacter(string code, Character* aCharacter){
 			GameLogger::enabled = true;
 			GameLogger::printEvent("enabled the logger");
 			system("CLS");
-			cout << "logger enabled";
+			cout << "logger enabled" << endl;
+			aMap->displayMap();
+		}
+
+		if (choice == 11)
+		{
+			aCharacter->togglePrinting(false);
+			GameLogger::printEvent("diable the inventory view");
+			system("CLS");
+			cout << "inventory disabled" << endl;
+			aMap->displayMap();
+		}
+
+		if (choice == 12)
+		{
+			aCharacter->togglePrinting(true);
+			GameLogger::printEvent("enabled the inventory view");
+			system("CLS");
+			cout << "inventory enabled" << endl;
+			aMap->displayMap();
 		}
 
 		if (choice == 7 && canAttack) {
@@ -389,12 +411,14 @@ void moveCharacter(string code, Character* aCharacter){
 				GameLogger::printEvent("destroyed " + attackChoice);
 				aMap->destroyEnemy(attackChoice);
 			}
+			aMap->displayMap();
 		
 		}
 		if (choice == 0)
 		{
 			GameLogger::printEvent("saving game");
 			editor->saveMap(editor->current_map->map_name);
+			aMap->displayMap();
 		}
 		if (aCharacter->getPlayerX() == aMap->mapWidth-1 && aCharacter->getPlayerY() == aMap->mapHeight-1)
 		{

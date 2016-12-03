@@ -20,6 +20,7 @@ protected:
 	
 	vector <int> attackBonus;//Added from a3
 	vector <Ability*> abilities;
+	bool printToggle = true;
 	
 
 
@@ -27,7 +28,7 @@ public:
 	Character(string characterType, string characterClass, ItemContainer* backpack, ItemContainer* wornItems, ItemContainer* treasureChest, vector<Ability*> abilities, int damageBonus, 
 		int nbrOfAttacks, int armorClass, int hitPoints, int level, int colPos, int rowPos);
 	Character(){};
-
+	void togglePrinting(bool v) { printToggle = v; }
 	void setHitPoints(int level);
 	Ability* getAbility(string aName);
 	ItemContainer* getWornItemContainer() { return wornItems; }

@@ -5,7 +5,7 @@
 using namespace std;
 namespace GameLogger
 {
-	bool enabled;
+	static bool enabled;
 	static void printEvent(string event)
 	{
 		if (!enabled)

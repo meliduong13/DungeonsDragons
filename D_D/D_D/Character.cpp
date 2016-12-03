@@ -145,7 +145,10 @@ int Character::calculatePB() {
 
 //! Prints the profile of the character 
 void Character::printProfile(){
-
+	if (!printToggle)
+	{
+		return;
+	}
 	vector<Item*> bp = wornItems->getItems();
 	vector<Item*> backpack_bp = backpack->getItems();
 	vector<Item*> treasure_bp = treasureChest->getItems();
