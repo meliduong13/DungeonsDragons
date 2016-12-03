@@ -100,10 +100,16 @@ bool Character::attack(Character* target) {
 	cout << "Hp of the target before the attack: " << target->getHitPoints() << endl;
 	damage = attackDiceResult + this->getAttackBonus().at(0);
 	target->setHP(target->getHitPoints() - damage);
+
 	cout << "Damage done: " << damage << endl;
 	cout << "Hp of the target after the attack: " << target->getHitPoints() << endl;
-	return true;
+	if (target->getHitPoints() <= 0) {
+		return true;
+	}
+	return false;
 }
+
+
 
 void Character::removeUpdate(Item *item) {
 	//int itemPosition = wornItems->getItemPosition(item->getType());

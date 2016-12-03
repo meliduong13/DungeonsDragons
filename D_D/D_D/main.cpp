@@ -288,7 +288,12 @@ void moveCharacter(string code, Character* aCharacter){
 				cout << surroundedEnemies.at(i) << endl;
 			}
 			cin >> attackChoice;
-			aCharacter->attack(aMap->getActor(attackChoice));
+			bool dead;
+			dead = aCharacter->attack(aMap->getActor(attackChoice));
+			if (dead) {
+				aMap->destroyEnemy(attackChoice);
+			}
+		
 		}
 		if (choice == 0)
 		{
