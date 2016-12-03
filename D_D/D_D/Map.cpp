@@ -270,6 +270,9 @@ bool Map::enemyMoveDown() {
 	return true;
 }
 
+void Map::destroyEnemy(string choice) {
+	actors.erase(choice); 
+}
 void Map::setEnemyAtStartingPoint()
 {
 	map[mapHeight - 1][mapWidth - 1] = 'E';
