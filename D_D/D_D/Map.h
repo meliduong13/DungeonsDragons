@@ -27,7 +27,7 @@ private:
 	map<string, Character*> actors;
 	map<string, ItemContainer*> chests;
 public:
-	char** map;
+	string** map;
 
 	int player_x;
 	int player_y;
@@ -61,9 +61,9 @@ public:
 	bool validatePath();
 	bool trySetEndPoint(int end_x, int end_y);
 	bool trySetStartPoint(int start_x, int start_y);
-	void fillCell(int x, int y, char obj);
+	void fillCell(int x, int y, string obj);
 	bool isOccupied(int x, int y);
-	char getCharacter(int x, int y);
+	string getCharacter(int x, int y);
 	void displayMap();
 	bool moveLeft(string code);
 	bool enemyMoveUp();
@@ -71,7 +71,7 @@ public:
 	bool enemyMoveDown();
 	void destroyEnemy(string choice);
 	void setEnemyAtStartingPoint();
-	vector<char> getSurroundingEnemies();
+	vector<string> getSurroundingEnemies();
 	bool enemyMoveRight();
 	bool enemyMoveLeft();
 	string canAttack(string code);

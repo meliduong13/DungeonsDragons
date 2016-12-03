@@ -23,7 +23,7 @@ string mapName;
 char name;
 char answer;
 int row, col;
-char obj;
+string obj;
 bool exitWhile = false;
 bool exitFromSelOpt = false;
 
@@ -34,6 +34,8 @@ Map *aMap = new Map();
 MapEditor *editor = new MapEditor();
 Item *myItem;
 string aname = "";
+int enemyNum = 0;
+string enemyCode = "";
 
 
 Character* make_player()
@@ -133,23 +135,22 @@ bool startNewGame() {
 	return true;
 } //1
 
-
 void fillCellHandler() {
 	switch (choice)
 	{
-	case 1: obj = 'i';
+	case 1: obj = "i";
 		aMap->fillCell(x, y, obj);
 		system("CLS");
 		aMap->displayMap();
 		break;
 
-	case 2: obj = 'o';
+	case 2: obj = "o";
 		aMap->fillCell(x, y, obj);
 		system("CLS");
 		aMap->displayMap();
 		break;
 
-	case 3: obj = 'w';
+	case 3: obj = "w";
 		aMap->fillCell(x, y, obj);
 		//verify if adding a new wall would still make the map traversable
 		//if traversable, display map
@@ -160,13 +161,13 @@ void fillCellHandler() {
 		}
 		else//otherwise do not fill the cell, and ask the user to add another item
 		{
-			aMap->fillCell(x, y, ' ');
+			aMap->fillCell(x, y, " ");
 			system("CLS");
 			aMap->displayMap();
 			cout << "Your last wall coordinate does not offer any valid path" << endl;
 		}
 		break;
-	case 4: obj = 'c';//adding a chest
+	case 4: obj = "c";//adding a chest
 					  //ItemContainer name = new ItemContainer();
 		aMap->fillCell(x, y, obj);
 		aname = to_string(x) + "," + to_string(y);
@@ -220,11 +221,13 @@ void fillCellHandler() {
 		cout << "---------------ADDED CHEST " << aname << " CONTAINS------------------" << endl;
 		break;
 
-	case 5: obj = 'a';
+	case 5: obj = "a";
 		enemy = make_player();
+		enemyCode = "a" + to_string(enemyNum);
+		enemyNum++;
 		enemy->setCol(x);
 		enemy->setRow(y);
-		editor->current_map->addActor("a", enemy);
+		editor->current_map->addActor(enemyCode, enemy);
 		editor->saveMap(editor->current_map->map_name);
 		system("CLS");
 		aMap->displayMap();
@@ -290,7 +293,7 @@ bool addMapObject() {
 
 
 void moveCharacter(string code, Character* aCharacter){
-	vector<char> surroundedEnemies;
+	vector<string> surroundedEnemies;
 	bool canAttack;
 
 	do{

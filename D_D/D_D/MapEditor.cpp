@@ -234,11 +234,10 @@ bool MapEditor::loadMap(std::string mapName)
 		{
 			for (int j = 0; j < width; ++j)
 			{
-				char c = myfile.get();
-				current_map->fillCell(i, j, c);
+				getline(myfile, line);
+				current_map->fillCell(i, j, line);
 			}
 		}
-		std::getline(myfile, line);
 		std::getline(myfile, line);
 		int startx = atoi(line.c_str());
 		std::getline(myfile, line);
@@ -295,10 +294,9 @@ bool MapEditor::saveMap(std::string mapName)
 		{
 			for (int j = 0; j < current_map->mapWidth; j++)
 			{
-				myfile << current_map->getCharacter(i, j);
+				myfile << current_map->getCharacter(i, j) + "\n";
 			}
 		}
-		myfile << "\n";
 		myfile << current_map->start_point_x << "\n" << current_map->start_point_y << "\n" << current_map->end_point_x << "\n" << current_map->end_point_y << "\n";
 		saveCharacters(&myfile);
 		saveChests(&myfile);

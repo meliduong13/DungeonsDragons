@@ -13,7 +13,7 @@ using namespace std;
 void Map::addActor(string actorCode, Character* character)
 {
 	actors[actorCode] = character;
-	fillCell(character->getCol(), character->getRow(), actorCode.at(0));
+	fillCell(character->getCol(), character->getRow(), actorCode);
 }
 
 void Map::addItemContainer(string ID, ItemContainer* itemContainer)
@@ -39,18 +39,18 @@ Map::Map(int height, int width, std::string map_name)
 	set = std::set<std::string>();
 	mapHeight = height;
 	mapWidth = width;
-	map = new char*[height];
+	map = new string*[height];
 	Map::map_name = map_name;
 	for (int i = 0; i < height; ++i)
 	{
-		map[i] = new char[width];
+		map[i] = new string[width];
 	}
 
 	for (int i = 0; i < height; ++i)
 	{
 		for (int j = 0; j < width; ++j)
 		{
-			map[i][j] = ' ';
+			map[i][j] = " ";
 		}
 	}
 }
@@ -76,7 +76,7 @@ bool Map::validate(int start_x, int start_y, int end_x, int end_y, std::set<std:
 		return false;
 	}
 	if (start_x == end_x && start_y == end_y) return true;
-	if (map[start_y][start_x] == 'w') return false;
+	if (map[start_y][start_x] == "w") return false;
 	int x[2];
 	int y[2];
 	x[0] = ((start_x == 0) ? start_x : start_x - 1);
@@ -159,7 +159,7 @@ bool Map::trySetStartPoint(int start_x, int start_y)
 //! @param x: an integer value of horizontal index of the map's grid
 //! @param y: an integer value of vertical index of the map's grid
 //! @param obj: a character value of object that fills the cell
-void Map::fillCell(int x, int y, char obj)
+void Map::fillCell(int x, int y, string obj)
 {
 	//Prevents the user from going out of bounds or rewriting a occupied space
 	if ((x > mapWidth || y > mapHeight || y < 0 || x < 0))
@@ -177,7 +177,7 @@ void Map::fillCell(int x, int y, char obj)
 //! @return : a boolean true if the cell is occupeid false otherwise
 bool Map::isOccupied(int x, int y)
 {
-	if (map[y][x] != ' ') {
+	if (map[y][x] != " ") {
 		return true;
 	}
 	return false;
@@ -187,7 +187,7 @@ bool Map::isOccupied(int x, int y)
 //! @param x: an integer value of horizontal index of the map's grid
 //! @param y: an integer value of vertical index of the map's grid
 //! @return : a character value of what's at the map cell
-char Map::getCharacter(int y, int x)
+string Map::getCharacter(int y, int x)
 {
 	return map[y][x];
 }
@@ -204,62 +204,62 @@ char Map::getCharacter(int y, int x)
 //	return true;
 //}
 bool Map::moveUp(string code) {
-	if (actors[code]->getRow() == 0 || map[actors[code]->getRow() - 1][actors[code]->getCol()] == 'w' || map[actors[code]->getRow() - 1][actors[code]->getCol()] == 'a' || map[actors[code]->getRow() - 1][actors[code]->getCol()] == 'c') {
+	if (actors[code]->getRow() == 0 || map[actors[code]->getRow() - 1][actors[code]->getCol()] == "w" || map[actors[code]->getRow() - 1][actors[code]->getCol()] == "a" || map[actors[code]->getRow() - 1][actors[code]->getCol()] == "c") {
 		return false;
 	}
-	map[actors[code]->getRow()][actors[code]->getCol()] = ' ';
+	map[actors[code]->getRow()][actors[code]->getCol()] = " ";
 	actors[code]->setRow(actors[code]->getRow() - 1);
-	map[actors[code]->getRow()][actors[code]->getCol()] = 'p';
+	map[actors[code]->getRow()][actors[code]->getCol()] = "p";
 	return true;
 }
 //! Moves the character down in the map
 //! @return a boolean indicating that the character can move down
 bool Map::moveDown(string code) {
 	if (actors[code]->getRow() == mapHeight - 1 || 
-		map[actors[code]->getRow() + 1][actors[code]->getCol()] == 'w' || 
-		map[actors[code]->getRow() + 1][actors[code]->getCol()] == 'a' || 
-		map[actors[code]->getRow() + 1][actors[code]->getCol()] == 'c') {
+		map[actors[code]->getRow() + 1][actors[code]->getCol()] == "w" || 
+		map[actors[code]->getRow() + 1][actors[code]->getCol()] == "a" || 
+		map[actors[code]->getRow() + 1][actors[code]->getCol()] == "c") {
 		return false;
 	}
-	map[actors[code]->getRow()][actors[code]->getCol()] = ' ';
+	map[actors[code]->getRow()][actors[code]->getCol()] = " ";
 	actors[code]->setRow(actors[code]->getRow() + 1);
-	map[actors[code]->getRow()][actors[code]->getCol()] = 'p';
+	map[actors[code]->getRow()][actors[code]->getCol()] = "p";
 	return true;
 }
 void Map::setCharacterAtStartingPoint()
 {
-	map[start_point_y][start_point_x] = 'p';
+	map[start_point_y][start_point_x] = "p";
 }
 //! Moves the character right in the map
 //! @return a boolean indicating that the character can move right 
 bool Map::moveRight(string code) {
-	if (actors[code]->getCol() == mapWidth - 1 || map[actors[code]->getRow()][actors[code]->getCol() + 1] == 'w' || map[actors[code]->getRow()][actors[code]->getCol() + 1] == 'a' || map[actors[code]->getRow()][actors[code]->getCol() + 1] == 'c')
+	if (actors[code]->getCol() == mapWidth - 1 || map[actors[code]->getRow()][actors[code]->getCol() + 1] == "w" || map[actors[code]->getRow()][actors[code]->getCol() + 1] == "a" || map[actors[code]->getRow()][actors[code]->getCol() + 1] == "c")
 	{
 		return false;
 	}
-	map[actors[code]->getRow()][actors[code]->getCol()] = ' ';
+	map[actors[code]->getRow()][actors[code]->getCol()] = " ";
 	actors[code]->setCol(actors[code]->getCol() + 1);
-	map[actors[code]->getRow()][actors[code]->getCol()] = 'p';
+	map[actors[code]->getRow()][actors[code]->getCol()] = "p";
 	return true;
 }
 //! Moves the character left in the map
 //! @return a boolean indicating that the character can move left 
 bool Map::moveLeft(string code) {
-	if (actors[code]->getCol() == 0 || map[actors[code]->getRow()][actors[code]->getCol() - 1] == 'w' || map[actors[code]->getRow()][actors[code]->getCol() - 1] == 'a' || map[actors[code]->getRow()][actors[code]->getCol() - 1] == 'c') {
+	if (actors[code]->getCol() == 0 || map[actors[code]->getRow()][actors[code]->getCol() - 1] == "w" || map[actors[code]->getRow()][actors[code]->getCol() - 1] == "a" || map[actors[code]->getRow()][actors[code]->getCol() - 1] == "c") {
 		return false;
 	}
-	map[actors[code]->getRow()][actors[code]->getCol()] = ' ';
+	map[actors[code]->getRow()][actors[code]->getCol()] = " ";
 	actors[code]->setCol(actors[code]->getCol() - 1);
-	map[actors[code]->getRow()][actors[code]->getCol()] = 'p';
+	map[actors[code]->getRow()][actors[code]->getCol()] = "p";
 	return true;
 }
 bool Map::enemyMoveUp() {
 	if (player_y == 0) {
 		return false;
 	}
-	map[enemy_y][enemy_x] = ' ';
+	map[enemy_y][enemy_x] = " ";
 	enemy_y--;
-	map[enemy_y][enemy_x] = 'E';
+	map[enemy_y][enemy_x] = "E";
 	return true;
 }
 
@@ -269,9 +269,9 @@ bool Map::enemyMoveDown() {
 	if (enemy_y == mapHeight - 1) {
 		return false;
 	}
-	map[enemy_y][enemy_x] = ' ';
+	map[enemy_y][enemy_x] = " ";
 	enemy_y++;
-	map[enemy_y][enemy_x] = 'E';
+	map[enemy_y][enemy_x] = "E";
 	return true;
 }
 
@@ -280,14 +280,14 @@ void Map::destroyEnemy(string choice) {
 }
 void Map::setEnemyAtStartingPoint()
 {
-	map[mapHeight - 1][mapWidth - 1] = 'E';
+	map[mapHeight - 1][mapWidth - 1] = "E";
 	enemy_x = mapHeight - 1;
 	enemy_y = mapWidth - 1;
 }
 
-vector<char> Map::getSurroundingEnemies()
+vector<string> Map::getSurroundingEnemies()
 {
-	vector<char> enemyCodes;
+	vector<string> enemyCodes;
 	int x[2];
 	int y[2];
 	x[0] = ((actors["p"]->getRow() == 0) ? actors["p"]->getRow() : actors["p"]->getRow() - 1);
@@ -300,7 +300,7 @@ vector<char> Map::getSurroundingEnemies()
 		//vert 
 		if (!(actors["p"]->getCol() == y[i]))
 		{
-			if (map[y[i]][actors["p"]->getRow()] != 32 && map[y[i]][actors["p"]->getRow()] != '\0' && map[y[i]][actors["p"]->getRow()] != 'w' && map[y[i]][actors["p"]->getRow()] != 'c' && map[y[i]][actors["p"]->getRow()] != NULL)
+			if (map[y[i]][actors["p"]->getRow()] != "" && map[y[i]][actors["p"]->getRow()] != " " && map[y[i]][actors["p"]->getRow()] != "w" && map[y[i]][actors["p"]->getRow()] != "c")
 			{
 				enemyCodes.push_back(map[y[i]][actors["p"]->getRow()]);
 			}
@@ -309,7 +309,7 @@ vector<char> Map::getSurroundingEnemies()
 		//horiz
 		if (!(actors["p"]->getRow() == x[i]))
 		{
-			if (map[actors["p"]->getCol()][x[i]] != 32 && map[actors["p"]->getCol()][x[i]] != '\0' && map[actors["p"]->getCol()][x[i]] != 'w' && map[actors["p"]->getCol()][x[i]] != 'c' && map[actors["p"]->getCol()][x[i]] != NULL)		
+			if (map[actors["p"]->getCol()][x[i]] != "" && map[actors["p"]->getCol()][x[i]] != " " && map[actors["p"]->getCol()][x[i]] != "w" && map[actors["p"]->getCol()][x[i]] != "c")		
 			{
 				enemyCodes.push_back(map[actors["p"]->getCol()][x[i]]);
 			}
@@ -326,9 +326,9 @@ bool Map::enemyMoveRight() {
 	{
 		return false;
 	}
-	map[enemy_y][enemy_x] = ' ';
+	map[enemy_y][enemy_x] = " ";
 	enemy_x++;
-	map[enemy_y][enemy_x] = 'E';
+	map[enemy_y][enemy_x] = "E";
 	return true;
 }
 
@@ -338,9 +338,9 @@ bool Map::enemyMoveLeft() {
 	if (enemy_x == 0) {
 		return false;
 	}
-	map[enemy_y][enemy_x] = ' ';
+	map[enemy_y][enemy_x] = " ";
 	enemy_x--;
-	map[enemy_y][enemy_x] = 'E';
+	map[enemy_y][enemy_x] = "E";
 	return true;
 }
 
