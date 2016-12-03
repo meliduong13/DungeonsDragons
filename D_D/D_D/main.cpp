@@ -11,6 +11,11 @@
 #include "CharacterDirector.h"
 #include <string>
 #include "Logger.h"
+#include <io.h>
+#include <locale>
+#include <cstdio>  // for _fileno
+#include <fcntl.h> // for _O_U16TEXT
+#include <codecvt>
 
 using namespace std;
 
@@ -27,7 +32,7 @@ int row, col;
 string obj;
 bool exitWhile = false;
 bool exitFromSelOpt = false;
-
+void newStage();
 string questName;
 Character *enemy;
 Character *aCharacter = make_player();
@@ -38,6 +43,12 @@ string aname = "";
 int enemyNum = 0;
 string enemyCode = "";
 
+bool campaignMode = false;
+int stage = 0;
+
+void printEnding();
+void printAsciiArt(string file);
+void printStage(wstring file);
 
 Character* make_player()
 {
@@ -53,6 +64,30 @@ Character* make_player()
 	return chDirector.getCharacter();
 }
 
+void printAsciiArt(wstring file)
+{
+	_setmode(_fileno(stdout), _O_U16TEXT);
+	// open the file as Unicode, so we can read into wstrings
+	wifstream ifs(file);
+
+	// imbue the file with a codecvt_utf8 facet which knows how to
+	// convert from UTF-8 to UCS2 (the 2-byte part of UTF-16)
+	// Note this is available in Visual C++ 2010 and later
+	locale utf8_locale(locale(), new codecvt_utf8<wchar_t>);
+	ifs.imbue(utf8_locale);
+
+	// Skip the BOM (this gets translated from the UTF-8 to the
+	// UTF-16 version so will be a single character.)
+	wchar_t bom = L'\0';
+	ifs.get(bom);
+
+	// Read the file contents and write to wcout
+	wstring line;
+	while (getline(ifs, line)) {
+		wcout << line << endl;
+	}
+	_setmode(_fileno(stdout), _O_TEXT);
+}
 
 void createNewMap() {
 	delete aMap;
@@ -95,9 +130,9 @@ bool chooseNewMap() {
 	return true;
 } //2
 bool startNewGame() {
-	cout << "Menu:" << endl << "[1] Start new game :" << endl << "[2] Load previous game " << endl << endl;
+	cout << "Menu:" << endl << "[1] Start new game :" << endl << "[2] Load previous game " << endl << "[3] Campaign Mode " << endl << endl;
 	cin >> choice;
-	if (choice != 1 && choice != 2)
+	if (choice != 1 && choice != 2 && choice !=3)
 	{
 		return false;
 	}
@@ -109,7 +144,7 @@ bool startNewGame() {
 			cout << "Invalid Choice! Select between 1 and 2";
 		}
 	}
-	else
+	else if (choice == 2)
 	{
 		GameLogger::printEvent("loading a existing game");
 
@@ -134,6 +169,15 @@ bool startNewGame() {
 		editor->loadMap(v[choice]);
 		aMap = editor->current_map;
 		aCharacter = editor->current_map->getActor("p");
+	} else if (choice == 3)
+	{
+		campaignMode = true;
+		GameLogger::printEvent("Starting campaign mode");
+		editor->loadMap("c0");
+		aMap = editor->current_map;
+		aCharacter = editor->current_map->getActor("p");
+		printAsciiArt(L"start_campaign.txt");
+		system("pause");
 	}
 
 	return true;
@@ -152,6 +196,7 @@ void fillCellHandler() {
 	case 2: obj = "o";
 		GameLogger::printEvent("adding a exit door to the map");
 		aMap->fillCell(x, y, obj);
+		aMap->trySetEndPoint(x, y);
 		system("CLS");
 		aMap->displayMap();
 		break;
@@ -308,14 +353,14 @@ bool addMapObject() {
 }//4
 
 
-void moveCharacter(string code, Character* aCharacter){
+void moveCharacter(string code, Character* aCharacterP){
 	vector<string> surroundedEnemies;
 	bool canAttack;
 
 	do{
 		surroundedEnemies = aMap->getSurroundingEnemies();
 		canAttack = surroundedEnemies.size() > 0;
-		aCharacter->printProfile();
+		aCharacterP->printProfile();
 		cout << "Move the character again" << endl;
 		cout << "8 - Move up" << endl;
 		cout << "4 - Move left" << endl;
@@ -329,6 +374,7 @@ void moveCharacter(string code, Character* aCharacter){
 		cout << "12 - enable the inventory view" << endl;
 		cout << "0 - Save game" << endl;
 		cin >> choice;
+
 		if (choice == 4)
 		{
 			GameLogger::printEvent("player moving left");
@@ -381,7 +427,7 @@ void moveCharacter(string code, Character* aCharacter){
 
 		if (choice == 11)
 		{
-			aCharacter->togglePrinting(false);
+			aCharacterP->togglePrinting(false);
 			GameLogger::printEvent("diable the inventory view");
 			system("CLS");
 			cout << "inventory disabled" << endl;
@@ -390,7 +436,7 @@ void moveCharacter(string code, Character* aCharacter){
 
 		if (choice == 12)
 		{
-			aCharacter->togglePrinting(true);
+			aCharacterP->togglePrinting(true);
 			GameLogger::printEvent("enabled the inventory view");
 			system("CLS");
 			cout << "inventory enabled" << endl;
@@ -406,7 +452,7 @@ void moveCharacter(string code, Character* aCharacter){
 			}
 			cin >> attackChoice;
 			bool dead;
-			dead = aCharacter->attack(aMap->getActor(attackChoice));
+			dead = aCharacterP->attack(aMap->getActor(attackChoice));
 			if (dead) {
 				GameLogger::printEvent("destroyed " + attackChoice);
 				aMap->destroyEnemy(attackChoice);
@@ -420,11 +466,32 @@ void moveCharacter(string code, Character* aCharacter){
 			editor->saveMap(editor->current_map->map_name);
 			aMap->displayMap();
 		}
-		if (aCharacter->getPlayerX() == aMap->mapWidth-1 && aCharacter->getPlayerY() == aMap->mapHeight-1)
+		if (aCharacterP->getPlayerX() == aMap->mapWidth-1 && aCharacterP->getPlayerY() == aMap->mapHeight-1)
 		{
-			cout << "Character Level BEFORE is : " << aCharacter->getLevel();
-			cout << "Character Level AFTER is : " << aCharacter->incrLevel();
+			cout << "Character Level BEFORE is : " << aCharacterP->getLevel();
+			cout << "Character Level AFTER is : " << aCharacterP->incrLevel();
 			return;
+		}
+		if (aMap->isAtExit(aCharacterP))
+		{
+			if (campaignMode)
+			{
+				stage++;
+				if (stage == 3)
+				{
+					printEnding();
+				}
+				editor->loadMap("c" + to_string(stage));
+				aMap = editor->current_map;
+				aCharacter = editor->current_map->getActor("p");
+				wstring file = L"c" + to_wstring(stage) + L".txt";
+				printStage(file);
+				newStage();
+			} else
+			{
+				printEnding();
+			}
+			
 		}
 	} while (true);
 }
@@ -673,16 +740,25 @@ bool removeItemDecision() {
 	return true;
 }
 
-int main() {
-	GameLogger::enabled = true;
+void printEnding()
+{
+	system("CLS");
+	printAsciiArt(L"final_screen.txt");
+	system("pause");
+	exit(0);
+}
 
-	cout << "Welcome to Dragon and Dugeons" << endl;
-	GameLogger::printEvent("Starting the welcome screen");
-	while (!startNewGame()) {
-		cout << " Invalid choice. Please select a choice between 1 and 2" << endl;
-	}
+void printStage(wstring file)
+{
+	system("CLS");
+	printAsciiArt(file);
+	system("pause");
+}
 
-	aCharacter->printProfile(); 
+void newStage()
+{
+	system("CLS");
+	aCharacter->printProfile();
 
 	aMap->displayMap();
 
@@ -695,7 +771,7 @@ int main() {
 		cout << "Invalid Choice!" << endl;
 	}
 
-	while (!addItemDecision()){
+	while (!addItemDecision()) {
 		cout << "Please select a choice between the offered options" << endl;
 	}
 	while (!removeItemDecision()) {
@@ -703,8 +779,19 @@ int main() {
 
 	}
 	editor->current_map->displayMap();
-	moveCharacter("p",aCharacter);
+	moveCharacter("p", aCharacter);
+}
 
+int main() {
+	GameLogger::enabled = true;
+	printAsciiArt(L"intro.txt");
+	cout << "Welcome to Dragon and Dugeons" << endl;
+	GameLogger::printEvent("Starting the welcome screen");
+	while (!startNewGame()) {
+		cout << " Invalid choice. Please select a choice between 1 and 2" << endl;
+	}
+
+	newStage();
 
 	return 0;
 }

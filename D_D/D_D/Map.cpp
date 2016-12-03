@@ -275,6 +275,11 @@ bool Map::enemyMoveDown() {
 	return true;
 }
 
+bool Map::isAtExit(Character* character)
+{
+	return character->getRow() == end_point_x && character->getCol() == end_point_y;
+}
+
 void Map::destroyEnemy(string choice) {
 	actors.erase(choice); 
 }

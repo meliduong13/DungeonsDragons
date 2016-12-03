@@ -149,7 +149,7 @@ void Character::printProfile(){
 	{
 		return;
 	}
-	vector<Item*> bp = wornItems->getItems();
+ 	vector<Item*> bp = wornItems->getItems();
 	vector<Item*> backpack_bp = backpack->getItems();
 	vector<Item*> treasure_bp = treasureChest->getItems();
 
