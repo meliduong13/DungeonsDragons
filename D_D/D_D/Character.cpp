@@ -65,6 +65,37 @@ void Character::wearUpdate(string addOrRemove) {
 	}//if
 }//function
 
+
+bool Character::attack(Character* target) {
+	Dice aDice = Dice();
+	int diceResult = 0;
+	int attackDiceResult = 0;
+	diceResult = aDice.roll("1d20[+" + to_string(attackBonus.at(0)) + "]");
+	if (diceResult < target->armorClass) {
+		cout << "The target has more armor class points, attack not hit!" << endl;
+		return false;
+	}
+	else {
+		for (int i = 0; i < this->wornItems->getSize(); i++) {
+			if (this->wornItems->getItems().at(i)->getType() == "Sword") {
+				attackDiceResult = aDice.roll("1d8[+0]");
+				break;
+			}
+			else if (this->wornItems->getItems().at(i)->getType() == "Javeline") {
+				attackDiceResult = aDice.roll("1d4[+0]");
+				break;
+			}
+			else if (this->wornItems->getItems().at(i)->getType() == "Javeline") {
+				attackDiceResult = aDice.roll("1d6[+0]");
+				break;
+			}
+		}
+	}
+	cout << "Attack!" << endl;
+	target->setHP(target->getHitPoints() - (attackDiceResult + this->getAttackBonus().at(0)));
+	return true;
+}
+
 void Character::removeUpdate(Item *item) {
 	//int itemPosition = wornItems->getItemPosition(item->getType());
 	//vector<Item*> itemList = wornItems->getItems();

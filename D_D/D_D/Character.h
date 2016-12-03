@@ -10,6 +10,8 @@ class Character {
 protected:
 	int rowPos = 0;
 	int colPos = 0;
+	int player_y = 0;
+	int player_x = 0;
 	int level;
 	int hitPoints = 0;
 	const int maxHitDice = 10;
@@ -32,13 +34,14 @@ public:
 	ItemContainer* getBackPackContainer() { return backpack; }
 	ItemContainer* getTreasureBackPack() { return treasureChest; }
 	
-
+	void setHP(int a) { hitPoints = a;}
 	void updateAbilities();
 	int calculatePB();
 	void wearUpdate(string addOrRemove);
 	void removeUpdate(Item  *i);
 	vector <Ability*> getAbilities(){ return abilities; }
 	void printProfile();
+	bool attack(Character*);
 	int getRow() { return rowPos; };
 	int getCol() { return colPos; };
 	ItemContainer *backpack;
@@ -70,4 +73,16 @@ public:
 	int armorClass = 0; //Added from a3
 	int damageBonus = 0; //Added from a3
 	int nbrOfAttacks = 0; //Added from a3
-}; 
+	int getPlayerX() {
+		return player_x;
+	};
+	int getPlayerY() {
+		return player_y;
+	};
+	void setPlayerY(int a) {
+		player_y += a;
+	};
+	void setPlayerX(int a) {
+		player_x += a;
+	};
+};

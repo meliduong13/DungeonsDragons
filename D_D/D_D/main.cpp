@@ -9,6 +9,7 @@
 #include <ctime>
 #include "Nimble.h"
 #include "CharacterDirector.h"
+
 using namespace std;
 
 Character* make_player();
@@ -26,7 +27,7 @@ bool exitWhile = false;
 bool exitFromSelOpt = false;
 
 string questName;
-
+Character *enemy;
 Character *aCharacter = make_player();
 Map *aMap = new Map();
 MapEditor *editor = new MapEditor();
@@ -169,7 +170,12 @@ void fillCellHandler() {
 		break;
 
 	case 5: obj = 'a';
+		enemy = make_player();
+		enemy->setCol(x);
+		enemy->setRow(y);
 		aMap->fillCell(x, y, obj);
+		editor->current_map->addActor("a", enemy);
+		editor->saveMap(editor->current_map->map_name);
 		system("CLS");
 		aMap->displayMap();
 		break;
@@ -233,49 +239,58 @@ bool addMapObject() {
 }//4
 
 
-void moveCharacter(){
-
-
+void moveCharacter(string code, Character* aCharacter){
+	string enemiesNear = "";
+	//enemiesNear = aMap->canAttack(code);
 	do{
 		cout << "Move the character again" << endl;
 		cout << "8 - Move up" << endl;
 		cout << "4 - Move left" << endl;
 		cout << "5 - Move down" << endl;
 		cout << "6 - Move right" << endl;
+		cout << "7 - Attack" << endl;
 		cout << "0 - Save game" << endl;
 		cin >> choice;
 		if (choice == 4)
 		{
 			system("CLS");
-			aMap->moveLeft();
+			aMap->moveLeft(code);
 			aMap->displayMap();
 
 		}
 		else if (choice == 5){
 			system("CLS");
-			aMap->moveDown();
+			aMap->moveDown(code);
 			aMap->displayMap();
 
 		}
 		else if (choice == 6){
 			system("CLS");
-			aMap->moveRight();
+			aMap->moveRight(code);
 			aMap->displayMap();
 
 		}
 		if (choice == 8)
 		{
 			system("CLS");
-			aMap->moveUp();
+			aMap->moveUp(code);
 			aMap->displayMap();
 
 		}
-
+		if (choice == 7 || enemiesNear != "") {
+			cout << "Who do you wish to attack?" << endl;
+			string attackChoice;
+			for (int i = 0; i < enemiesNear.length(); i++) {
+				enemiesNear[i];
+			}
+			cin >> attackChoice;
+			aCharacter->attack(aMap->getActor(attackChoice));
+		}
 		if (choice == 0)
 		{
 			editor->saveMap(editor->current_map->map_name);
 		}
-		if (aMap->player_x == aMap->end_point_x && aMap->player_y == aMap->end_point_y)
+		if (aCharacter->getPlayerX() == aMap->mapWidth-1 && aCharacter->getPlayerY() == aMap->mapHeight-1)
 		{
 			cout << "Character Level BEFORE is : " << aCharacter->getLevel();
 			cout << "Character Level AFTER is : " << aCharacter->incrLevel();
@@ -557,7 +572,7 @@ int main() {
 
 	}
 	editor->current_map->displayMap();
-	moveCharacter();
+	moveCharacter("p",aCharacter);
 
 
 	return 0;

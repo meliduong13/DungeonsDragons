@@ -44,6 +44,7 @@ public:
 	Map(int height, int width, std::string map_name);
 	~Map();
 	std::map<string, Character*> getActors() { return actors; }
+	Character* getActor(string actor) { return actors[actor]; }
 	std::string map_name;
 	bool validatePath(int start_x, int start_y, int end_x, int end_y);
 	bool validatePath();
@@ -53,15 +54,16 @@ public:
 	bool isOccupied(int x, int y);
 	char getCharacter(int x, int y);
 	void displayMap();
-	bool moveLeft();
+	bool moveLeft(string code);
 	bool enemyMoveUp();
-	bool moveRight();
-	bool moveUp();
-	bool moveDown();
+	bool moveUp(string code);
 	bool enemyMoveDown();
 	void setEnemyAtStartingPoint();
 	bool enemyMoveRight();
 	bool enemyMoveLeft();
+	string canAttack(string code);
+	bool moveDown(string code);
 	void setCharacterAtStartingPoint();
+	bool moveRight(string code);
 };
 

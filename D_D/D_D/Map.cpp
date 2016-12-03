@@ -188,58 +188,65 @@ char Map::getCharacter(int x, int y)
 
 //! Moves the character up in the map
 //! @return a boolean indicating that the character can move up
-bool Map::moveUp(){
-	if (player_y == 0 || map[player_y - 1][player_x] == 'w' || map[player_y - 1][player_x] == 'a' || map[player_y - 1][player_x] == 'c'){
+//bool Map::moveUp(Character* chara) {
+//	if (actors[code]->getRow() == 0 || map[actors[code]->getRow() - 1][actors[code]->getCol()] == 'w' || map[actors[code]->getRow() - 1][actors[code]->getCol()] == 'a' || map[actors[code]->getRow() - 1][actors[code]->getCol()] == 'c') {
+//		return false;
+//	}
+//	map[actors[code]->getRow()][actors[code]->getCol()] = ' ';
+//	chara->setPlayerY(-1);
+//	map[actors[code]->getRow()][actors[code]->getCol()] = 'p';
+//	return true;
+//}
+bool Map::moveUp(string code) {
+	if (actors[code]->getRow() == 0 || map[actors[code]->getRow() - 1][actors[code]->getCol()] == 'w' || map[actors[code]->getRow() - 1][actors[code]->getCol()] == 'a' || map[actors[code]->getRow() - 1][actors[code]->getCol()] == 'c') {
 		return false;
 	}
-	map[player_y][player_x] = ' ';
-	player_y--;
-	map[player_y][player_x] = 'p';
+	map[actors[code]->getRow()][actors[code]->getCol()] = ' ';
+	actors[code]->setRow(actors[code]->getRow() - 1);
+	map[actors[code]->getRow()][actors[code]->getCol()] = 'p';
 	return true;
 }
-
 //! Moves the character down in the map
 //! @return a boolean indicating that the character can move down
-bool Map::moveDown(){
-	if (player_y == mapHeight - 1 || map[player_y + 1][player_x] == 'w' || map[player_y + 1][player_x] == 'a' || map[player_y + 1][player_x] == 'c'){
+bool Map::moveDown(string code) {
+	if (actors[code]->getRow() == mapHeight - 1 || 
+		map[actors[code]->getRow() + 1][actors[code]->getCol()] == 'w' || 
+		map[actors[code]->getRow() + 1][actors[code]->getCol()] == 'a' || 
+		map[actors[code]->getRow() + 1][actors[code]->getCol()] == 'c') {
 		return false;
 	}
-	map[player_y][player_x] = ' ';
-	player_y++;
-	map[player_y][player_x] = 'p';
+	map[actors[code]->getRow()][actors[code]->getCol()] = ' ';
+	actors[code]->setRow(actors[code]->getRow() + 1);
+	map[actors[code]->getRow()][actors[code]->getCol()] = 'p';
 	return true;
 }
-
 void Map::setCharacterAtStartingPoint()
 {
 	map[start_point_y][start_point_x] = 'p';
 }
-
 //! Moves the character right in the map
 //! @return a boolean indicating that the character can move right 
-bool Map::moveRight(){
-	if (player_x == mapWidth - 1 || map[player_y][player_x + 1] == 'w' || map[player_y][player_x + 1] == 'a' || map[player_y][player_x + 1] == 'c')
+bool Map::moveRight(string code) {
+	if (actors[code]->getCol() == mapWidth - 1 || map[actors[code]->getRow()][actors[code]->getCol() + 1] == 'w' || map[actors[code]->getRow()][actors[code]->getCol() + 1] == 'a' || map[actors[code]->getRow()][actors[code]->getCol() + 1] == 'c')
 	{
 		return false;
 	}
-	map[player_y][player_x] = ' ';
-	player_x++;
-	map[player_y][player_x] = 'p';
+	map[actors[code]->getRow()][actors[code]->getCol()] = ' ';
+	actors[code]->setCol(actors[code]->getCol() + 1);
+	map[actors[code]->getRow()][actors[code]->getCol()] = 'p';
 	return true;
 }
-
 //! Moves the character left in the map
 //! @return a boolean indicating that the character can move left 
-bool Map::moveLeft(){
-	if (player_x == 0 || map[player_y][player_x - 1] == 'w' || map[player_y][player_x - 1] == 'a' || map[player_y][player_x - 1] == 'c'){
+bool Map::moveLeft(string code) {
+	if (actors[code]->getCol() == 0 || map[actors[code]->getRow()][actors[code]->getCol() - 1] == 'w' || map[actors[code]->getRow()][actors[code]->getCol() - 1] == 'a' || map[actors[code]->getRow()][actors[code]->getCol() - 1] == 'c') {
 		return false;
 	}
-	map[player_y][player_x] = ' ';
-	player_x--;
-	map[player_y][player_x] = 'p';
+	map[actors[code]->getRow()][actors[code]->getCol()] = ' ';
+	actors[code]->setCol(actors[code]->getCol() - 1);
+	map[actors[code]->getRow()][actors[code]->getCol()] = 'p';
 	return true;
 }
-
 bool Map::enemyMoveUp() {
 	if (player_y == 0) {
 		return false;
@@ -292,6 +299,26 @@ bool Map::enemyMoveLeft() {
 	enemy_x--;
 	map[enemy_y][enemy_x] = 'E';
 	return true;
+}
+
+string Map::canAttack(string code) {
+	string enemiesNear = "";
+	bool a = this->map[actors[code]->getCol() + 1][actors[code]->getRow()] == 'a';
+	bool b = this->map[actors[code]->getCol() - 1][actors[code]->getRow()] == 'a';
+	bool c = this->map[actors[code]->getCol()][actors[code]->getRow() + 1] == 'a';
+	bool d = this->map[actors[code]->getCol()][actors[code]->getRow() - 1] == 'a';
+	if (a || b || c || d) 
+	/*if (map[actors[code]->getCol() + 1][actors[code]->getRow()] == 'a' || 
+		map[actors[code]->getCol() - 1][actors[code]->getRow()] == 'a')
+		map[actors[code]->getCol()][actors[code]->getRow() + 1] == 'a' || 
+		map[actors[code]->getCol()][actors[code]->getRow() - 1] == 'a')
+		*/
+	{
+		return enemiesNear;
+	}
+	else { return ""; }
+	
+	return "";
 }
 
 //! Displays the map and clears the map before displaying
