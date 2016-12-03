@@ -26,11 +26,13 @@ ItemContainer::ItemContainer(vector<Item*> containeritems)
 	items = containeritems;
 }
 
-ItemContainer::ItemContainer(vector<Item*> items, string name, string type)
+ItemContainer::ItemContainer(vector<Item*> items, string name, string type, int xCoord, int yCoord)
 {
 	this->items = items;
 	this->name = name;
 	this->type = type;
+	this->xCoord = xCoord;
+	this->yCoord = yCoord;
 }
 
 //! method to get the items of the container

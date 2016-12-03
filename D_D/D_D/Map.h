@@ -25,6 +25,7 @@ private:
 	std::set<std::string> set;
 	bool validate(int start_x, int start_y, int end_x, int end_y, std::set<std::string>& set);
 	map<string, Character*> actors;
+	map<string, ItemContainer*> chests;
 public:
 	char** map;
 
@@ -39,12 +40,22 @@ public:
 	int end_point_x;
 	int end_point_y;
 	void addActor(string actorCode, Character* character);
+	void addItemContainer(string itemCode, ItemContainer* itemContainer);
 	void removeActor(string actorCode);
 	Map();
 	Map(int height, int width, std::string map_name);
 	~Map();
 	std::map<string, Character*> getActors() { return actors; }
+	std::map<string, ItemContainer*> getChests() { return chests; }
 	Character* getActor(string actor) { return actors[actor]; }
+	std::vector<ItemContainer*> getChestsAsList() {
+		vector<ItemContainer*> c;
+		for (auto &f : chests) {
+			c.push_back(f.second);
+		}
+
+		return c;
+	}
 	std::string map_name;
 	bool validatePath(int start_x, int start_y, int end_x, int end_y);
 	bool validatePath();

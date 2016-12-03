@@ -16,12 +16,14 @@ protected:
 	vector<Item*>items;
 
 public:
+	int xCoord;
+	int yCoord;
 	string name;
 	ItemContainer::ItemContainer();
 	ItemContainer::~ItemContainer();
 	ItemContainer::ItemContainer(string aname, string atype);
 	ItemContainer::ItemContainer(vector<Item*> containeritems);
-	ItemContainer(vector<Item*> items, string name, string type);
+	ItemContainer(vector<Item*> items, string name, string type, int xCoord, int yCoord);
 	bool ItemContainer::addItem(Item* anitem);
 	Item* ItemContainer::removeItem(string anitem);
 	Item* ItemContainer::getItem(int itemId);

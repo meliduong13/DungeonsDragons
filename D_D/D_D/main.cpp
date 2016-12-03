@@ -9,6 +9,7 @@
 #include <ctime>
 #include "Nimble.h"
 #include "CharacterDirector.h"
+#include <string>
 
 using namespace std;
 
@@ -32,6 +33,7 @@ Character *aCharacter = make_player();
 Map *aMap = new Map();
 MapEditor *editor = new MapEditor();
 Item *myItem;
+string aname = "";
 
 
 Character* make_player()
@@ -163,10 +165,58 @@ void fillCellHandler() {
 			cout << "Your last wall coordinate does not offer any valid path" << endl;
 		}
 		break;
-	case 4: obj = 'c';
+	case 4: obj = 'c';//adding a chest
+					  //ItemContainer name = new ItemContainer();
 		aMap->fillCell(x, y, obj);
+		aname = to_string(x) + "," + to_string(y);
+		aMap->addItemContainer(aname, new ItemContainer());
+		do {
+			do {
+				cout << "Select which item do you want to add to chest" << endl;
+				cout << "1 - Armor" << endl;
+				cout << "2 - Ring" << endl;
+				cout << "3 - Helmet" << endl;
+				cout << "4 - Boots" << endl;
+				cout << "5 - Belt" << endl;
+				cout << "6 - Sword" << endl;
+				cout << "7 - Shield" << endl;
+				cout << "8 - Nothing more to add" << endl;
+				cin >> choice;
+			} while (choice < 0 || choice > 8);//do while
+
+			switch (choice)
+			{
+			case 1:
+				aMap->getChests()[aname]->addItem(new Item("Armor"));
+				break;
+			case 2:
+				aMap->getChests()[aname]->addItem(new Item("Ring"));
+				break;
+			case 3:
+				aMap->getChests()[aname]->addItem(new Item("Helmet"));
+				break;
+			case 4:
+				aMap->getChests()[aname]->addItem(new Item("Boots"));
+				break;
+			case 5:
+				aMap->getChests()[aname]->addItem(new Item("Belt"));
+				break;
+			case 6:
+				aMap->getChests()[aname]->addItem(new Item("Sword"));
+				break;
+			case 7:
+				aMap->getChests()[aname]->addItem(new Item("Shield"));
+				break;
+			case 8: break;
+			}
+		} while (choice != 8);// if you do not want to add anything anymore
 		system("CLS");
 		aMap->displayMap();
+		cout << "---------------ADDED CHEST " << aname << " CONTAINS------------------" << endl;
+		for (int i = 0; i < aMap->getChestsAsList().at(0)->getItems().size(); i++) {
+			cout << "--> " << aMap->getChestsAsList().at(0)->getItems().at(i)->getType() << endl;
+		}
+		cout << "---------------ADDED CHEST " << aname << " CONTAINS------------------" << endl;
 		break;
 
 	case 5: obj = 'a';

@@ -16,6 +16,11 @@ void Map::addActor(string actorCode, Character* character)
 	fillCell(character->getCol(), character->getRow(), actorCode.at(0));
 }
 
+void Map::addItemContainer(string ID, ItemContainer* itemContainer)
+{
+	chests[ID] = itemContainer;
+}
+
 void Map::removeActor(string actorCode)
 {
 	actors.erase(actorCode);
