@@ -281,7 +281,9 @@ bool Map::isAtExit(Character* character)
 }
 
 void Map::destroyEnemy(string choice) {
-	actors.erase(choice); 
+	Character *c = actors[choice];
+	map[c->getCol()][c->getRow()] = " ";
+	actors.erase(choice);
 }
 void Map::setEnemyAtStartingPoint()
 {

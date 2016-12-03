@@ -16,10 +16,12 @@
 #include <cstdio>  // for _fileno
 #include <fcntl.h> // for _O_U16TEXT
 #include <codecvt>
+#include "Tank.h"
+#include "Bully.h"
 
 using namespace std;
 
-Character* make_player();
+Character* make_player(int level, string selectOption);
 
 int choice;
 int height, width;
@@ -35,7 +37,7 @@ bool exitFromSelOpt = false;
 void newStage();
 string questName;
 Character *enemy;
-Character *aCharacter = make_player();
+Character *aCharacter = make_player(2, "Nimble");
 Map *aMap = new Map();
 MapEditor *editor = new MapEditor();
 Item *myItem;
@@ -50,19 +52,31 @@ void printEnding();
 void printAsciiArt(string file);
 void printStage(wstring file);
 
-Character* make_player()
+Character* make_player(int level, string selecOptionString)
 {
 	CharacterDirector chDirector;
-	int level = 1;
 	////Create the Concrete Builder Nimble
-	CharacterBuilder* nimble = new Nimble;
-	////Tell the CharacterDirector which Concrete Builder to use
-	chDirector.setCharacterBuilder(nimble);
+	if (selecOptionString == "Bully") {
+		CharacterBuilder* bully = new Bully;
+		////Tell the CharacterDirector which Concrete Builder to use
+		chDirector.setCharacterBuilder(bully);
+	}
+	else if (selecOptionString == "Nimble") {
+		CharacterBuilder* nimble = new Nimble;
+		////Tell the CharacterDirector which Concrete Builder to use
+		chDirector.setCharacterBuilder(nimble);
+	}
+	else if (selecOptionString == "Tank") {
+		CharacterBuilder* tank = new Tank;
+		////Tell the CharacterDirector which Concrete Builder to use
+		chDirector.setCharacterBuilder(tank);
+	}
 	////Tell the Director to construct
 	chDirector.constructCharacter(level, "friendly");
 	////We are getting the character of nimble
 	return chDirector.getCharacter();
 }
+
 
 void printAsciiArt(wstring file)
 {
@@ -114,9 +128,11 @@ bool chooseNewMap() {
 
 	if (choice == 1)
 	{
+		GameLogger::printEvent("Creating a new non default game");
 		createNewMap();
 	}
 	else {
+		GameLogger::printEvent("Using the default game");
 		editor->createMap(5, 5, "default");
 		aMap = editor->current_map;
 	}
@@ -184,6 +200,10 @@ bool startNewGame() {
 } //1
 
 void fillCellHandler() {
+	int tempLevel = 1;
+	int selcOption;
+	string selcOptionString;
+	string choiceEorF;
 	switch (choice)
 	{
 	case 1: obj = "i";
@@ -275,15 +295,31 @@ void fillCellHandler() {
 		system("CLS");
 		aMap->displayMap();
 		cout << "---------------ADDED CHEST " << aname << " CONTAINS------------------" << endl;
-		for (int i = 0; i < aMap->getChestsAsList().at(0)->getItems().size(); i++) {
-			cout << "--> " << aMap->getChestsAsList().at(0)->getItems().at(i)->getType() << endl;
+		for (int i = 0; i < aMap->getChests()[aname]->getItems().size(); i++) {
+			cout << "--> " << aMap->getChests()[aname]->getItems().at(i)->getType() << endl;
 		}
 		cout << "---------------ADDED CHEST " << aname << " CONTAINS------------------" << endl;
 		break;
 
 	case 5: obj = "a";
+		cout << "Please enter the level of the enemy: " << endl;
+		cin >> tempLevel;
+		cout << "Please enter the type of enemy : " << endl;
+		cout << "1- Bully" << endl;
+		cout << "2- Nimble" << endl;
+		cout << "3- Tank" << endl;
+		cin >> selcOption;
+		if (selcOption == 1) {
+			selcOptionString = "Bully";
+		}
+		else if (selcOption == 2) {
+			selcOptionString = "Nimble";
+		}
+		else {
+			selcOptionString = "Tank";
+		}
 		GameLogger::printEvent("made player");
-		enemy = make_player();
+		enemy = make_player(tempLevel, selcOptionString);
 		enemyCode = "a" + to_string(enemyNum);
 		enemyNum++;
 		enemy->setCol(x);
@@ -452,13 +488,18 @@ void moveCharacter(string code, Character* aCharacterP){
 			}
 			cin >> attackChoice;
 			bool dead;
-			dead = aCharacterP->attack(aMap->getActor(attackChoice));
+			cout << "=========== Player Attack Phase ===========" << endl;
+			dead = aCharacter->attack(aMap->getActor(attackChoice));
 			if (dead) {
 				GameLogger::printEvent("destroyed " + attackChoice);
 				aMap->destroyEnemy(attackChoice);
 			}
-			aMap->displayMap();
-		
+			else {
+				cout << endl << "=========== Enemy Attack Phase ===========" << endl;
+				cout << "Enemy attacked back!!" << endl;
+				aMap->getActor(attackChoice)->attack(aCharacter);
+			}
+			aMap->displayMap();		
 		}
 		if (choice == 0)
 		{
