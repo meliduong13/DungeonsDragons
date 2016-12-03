@@ -33,8 +33,6 @@ Character *aCharacter = make_player();
 Map *aMap = new Map();
 MapEditor *editor = new MapEditor();
 Item *myItem;
-string one="";
-string two = "";
 string aname = "";
 
 
@@ -169,9 +167,7 @@ void fillCellHandler() {
 	case 4: obj = 'c';//adding a chest
 		//ItemContainer name = new ItemContainer();
 		aMap->fillCell(x, y, obj);
-		one = to_string(x);
-		two = to_string(y);
-		aname = one+two;
+		aname = to_string(x) + "," + to_string(y);
 		aMap->addItemContainer(aname, new ItemContainer());
 		do {
 			do {
