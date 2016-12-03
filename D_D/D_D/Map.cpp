@@ -182,7 +182,7 @@ bool Map::isOccupied(int x, int y)
 //! @param x: an integer value of horizontal index of the map's grid
 //! @param y: an integer value of vertical index of the map's grid
 //! @return : a character value of what's at the map cell
-char Map::getCharacter(int x, int y)
+char Map::getCharacter(int y, int x)
 {
 	return map[y][x];
 }
