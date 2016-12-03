@@ -2,11 +2,12 @@
 //! @brief Dice class implementation file  
 
 #include "Dice.h"
+#include "Logger.h"
 
 //! @param string : a string of the form "xdy[+z]".
 //! @return an integer which is the addition of the value of all dice and return -1 when the expression dose not follow he right format
 int Dice::roll(string rollString) {
-
+	GameLogger::printEvent("rolling dice");
 	bool checkRollStrMatched = true;
 	checkRollString(rollString);
 
@@ -42,6 +43,7 @@ int Dice::roll(string rollString) {
 
 		//setDiceValues(xRollValue, yRollValue, zRollValue, modifierRollSign);
 		int result = rollDice(xRollValue, yRollValue, zRollValue, modifierRollSign);
+		GameLogger::printEvent("dice roll resulted in " + to_string(result));
 		return result;
 	}
 	else {

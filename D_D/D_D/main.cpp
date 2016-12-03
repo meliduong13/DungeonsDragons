@@ -143,18 +143,21 @@ void fillCellHandler() {
 	switch (choice)
 	{
 	case 1: obj = "i";
+		GameLogger::printEvent("adding a entry door to the map");
 		aMap->fillCell(x, y, obj);
 		system("CLS");
 		aMap->displayMap();
 		break;
 
 	case 2: obj = "o";
+		GameLogger::printEvent("adding a exit door to the map");
 		aMap->fillCell(x, y, obj);
 		system("CLS");
 		aMap->displayMap();
 		break;
 
 	case 3: obj = "w";
+		GameLogger::printEvent("adding a wall to the map");
 		aMap->fillCell(x, y, obj);
 		//verify if adding a new wall would still make the map traversable
 		//if traversable, display map
@@ -173,6 +176,7 @@ void fillCellHandler() {
 		break;
 	case 4: obj = "c";//adding a chest
 					  //ItemContainer name = new ItemContainer();
+		GameLogger::printEvent("adding a chest to the map");
 		aMap->fillCell(x, y, obj);
 		aname = to_string(x) + "," + to_string(y);
 		aMap->addItemContainer(aname, new ItemContainer());
@@ -193,24 +197,31 @@ void fillCellHandler() {
 			switch (choice)
 			{
 			case 1:
+				GameLogger::printEvent("selected armor");
 				aMap->getChests()[aname]->addItem(new Item("Armor"));
 				break;
 			case 2:
+				GameLogger::printEvent("selected ring");
 				aMap->getChests()[aname]->addItem(new Item("Ring"));
 				break;
 			case 3:
+				GameLogger::printEvent("selected helmet");
 				aMap->getChests()[aname]->addItem(new Item("Helmet"));
 				break;
 			case 4:
+				GameLogger::printEvent("selected boots");
 				aMap->getChests()[aname]->addItem(new Item("Boots"));
 				break;
 			case 5:
+				GameLogger::printEvent("selected belt");
 				aMap->getChests()[aname]->addItem(new Item("Belt"));
 				break;
 			case 6:
+				GameLogger::printEvent("selected sword");
 				aMap->getChests()[aname]->addItem(new Item("Sword"));
 				break;
 			case 7:
+				GameLogger::printEvent("selected shield");
 				aMap->getChests()[aname]->addItem(new Item("Shield"));
 				break;
 			case 8: break;
@@ -226,11 +237,13 @@ void fillCellHandler() {
 		break;
 
 	case 5: obj = "a";
+		GameLogger::printEvent("made player");
 		enemy = make_player();
 		enemyCode = "a" + to_string(enemyNum);
 		enemyNum++;
 		enemy->setCol(x);
 		enemy->setRow(y);
+		GameLogger::printEvent(enemy->printProfile());
 		editor->current_map->addActor(enemyCode, enemy);
 		editor->saveMap(editor->current_map->map_name);
 		system("CLS");
@@ -310,22 +323,27 @@ void moveCharacter(string code, Character* aCharacter){
 		cout << "6 - Move right" << endl;
 		if(canAttack)
 		cout << "7 - Attack" << endl;
+		cout << "9 - disable the logger" << endl;
+		cout << "10 - enable the logger" << endl;
 		cout << "0 - Save game" << endl;
 		cin >> choice;
 		if (choice == 4)
 		{
+			GameLogger::printEvent("player moving left");
 			system("CLS");
 			aMap->moveLeft(code);
 			aMap->displayMap();
 
 		}
 		else if (choice == 5){
+			GameLogger::printEvent("player moving down");
 			system("CLS");
 			aMap->moveDown(code);
 			aMap->displayMap();
 
 		}
 		else if (choice == 6){
+			GameLogger::printEvent("player moving right");
 			system("CLS");
 			aMap->moveRight(code);
 			aMap->displayMap();
@@ -333,14 +351,34 @@ void moveCharacter(string code, Character* aCharacter){
 		}
 		if (choice == 8)
 		{
+			GameLogger::printEvent("player moving up");
 			system("CLS");
 			aMap->moveUp(code);
 			aMap->displayMap();
 
 		}
+
+		if (choice == 9)
+		{
+			GameLogger::printEvent("disabling the logger");
+			GameLogger::enabled = false;
+			system("CLS");
+			cout << "logger disabled";
+		}
+
+		if (choice == 10)
+		{
+			
+			GameLogger::enabled = true;
+			GameLogger::printEvent("enabled the logger");
+			system("CLS");
+			cout << "logger enabled";
+		}
+
 		if (choice == 7 && canAttack) {
 			cout << "Who do you wish to attack?" << endl;
 			string attackChoice;
+			GameLogger::printEvent("attacking " + attackChoice);
 			for (int i = 0; i < surroundedEnemies.size(); i++) {
 				cout << surroundedEnemies.at(i) << endl;
 			}
@@ -348,12 +386,14 @@ void moveCharacter(string code, Character* aCharacter){
 			bool dead;
 			dead = aCharacter->attack(aMap->getActor(attackChoice));
 			if (dead) {
+				GameLogger::printEvent("destroyed " + attackChoice);
 				aMap->destroyEnemy(attackChoice);
 			}
 		
 		}
 		if (choice == 0)
 		{
+			GameLogger::printEvent("saving game");
 			editor->saveMap(editor->current_map->map_name);
 		}
 		if (aCharacter->getPlayerX() == aMap->mapWidth-1 && aCharacter->getPlayerY() == aMap->mapHeight-1)
@@ -611,10 +651,9 @@ bool removeItemDecision() {
 
 int main() {
 	GameLogger::enabled = true;
-	GameLogger::printEvent("test");
 
 	cout << "Welcome to Dragon and Dugeons" << endl;
-	GameLogger::printEvent("starting new game");
+	GameLogger::printEvent("Starting the welcome screen");
 	while (!startNewGame()) {
 		cout << " Invalid choice. Please select a choice between 1 and 2" << endl;
 	}
