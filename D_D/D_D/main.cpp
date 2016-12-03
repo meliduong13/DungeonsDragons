@@ -240,12 +240,11 @@ bool addMapObject() {
 
 void moveCharacter(string code, Character* aCharacter){
 	vector<char> surroundedEnemies;
-	surroundedEnemies = aMap->getSurroundingEnemies();
-	bool canAttack = false;
-	if (surroundedEnemies.size() > 0) {
-		canAttack = true;
-	}
+	bool canAttack;
+
 	do{
+		surroundedEnemies = aMap->getSurroundingEnemies();
+		canAttack = surroundedEnemies.size() > 0;
 		cout << "Move the character again" << endl;
 		cout << "8 - Move up" << endl;
 		cout << "4 - Move left" << endl;
