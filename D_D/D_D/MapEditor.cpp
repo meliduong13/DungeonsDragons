@@ -51,6 +51,8 @@ void MapEditor::saveCharacters(ofstream* myfile)
 		*myfile << character->getCharacterClass() << "\n";
 		ItemContainer* backpack = character->backpack;
 		saveItemContainer(myfile, backpack);
+		saveItemContainer(myfile, character->wornItems);
+		saveItemContainer(myfile, character->treasureChest);
 		vector<Ability*> abilities = character->getAbilities();
 		*myfile << abilities.size() << "\n";
 		for (int i = 0; i < abilities.size(); i++)
@@ -236,6 +238,7 @@ bool MapEditor::loadMap(std::string mapName)
 				current_map->fillCell(i, j, c);
 			}
 		}
+		std::getline(myfile, line);
 		std::getline(myfile, line);
 		int startx = atoi(line.c_str());
 		std::getline(myfile, line);

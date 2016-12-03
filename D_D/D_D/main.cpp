@@ -127,6 +127,7 @@ bool startNewGame() {
 		cin >> choice;
 		editor->loadMap(v[choice]);
 		aMap = editor->current_map;
+		aCharacter = editor->current_map->getActor("p");
 	}
 
 	return true;
