@@ -289,15 +289,21 @@ vector<char> Map::getSurroundingEnemies()
 
 	for (int i = 0; i < 2; ++i)
 	{
-		for (int j = 0; j < 2; ++j)
+		//vert 
+		if (!(actors["p"]->getCol() == y[i]))
 		{
-			if (!(actors["p"]->getRow() == x[i] && actors["p"]->getCol() == y[j]))
+			if (map[y[i]][actors["p"]->getRow()] != ' ' || map[y[i]][actors["p"]->getRow()] != '\0' || map[y[i]][actors["p"]->getRow()] != 'w' || map[y[i]][actors["p"]->getRow()] != 'c')
 			{
-				if (map[x[i]][y[j]] != ' ' || map[x[i]][y[j]] != 'w' || map[x[i]][y[j]] != 'c')
-				{
-					enemyCodes.push_back(map[x[i]][y[j]]);
-				}
-				
+				enemyCodes.push_back(map[y[i]][actors["p"]->getRow()]);
+			}
+		}
+
+		//horiz
+		if (!(actors["p"]->getRow() == x[i]))
+		{
+			if (map[y[i]][actors["p"]->getCol()] != ' ' || map[y[i]][actors["p"]->getCol()] != '\0' || map[y[i]][actors["p"]->getCol()] != 'w' || map[y[i]][actors["p"]->getCol()] != 'c')
+			{
+				enemyCodes.push_back(map[y[i]][actors["p"]->getCol()]);
 			}
 		}
 	}
