@@ -13,6 +13,7 @@ using namespace std;
 void Map::addActor(string actorCode, Character* character)
 {
 	actors[actorCode] = character;
+	fillCell(character->getRow(), character->getRow(), actorCode.at(0));
 }
 
 void Map::removeActor(string actorCode)
