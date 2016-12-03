@@ -1,4 +1,4 @@
-#include "Ability.h"
+﻿#include "Ability.h"
 #include "Character.h"
 #include "ItemContainer.h"
 #include "Item.h"
@@ -10,6 +10,7 @@
 #include "Nimble.h"
 #include "CharacterDirector.h"
 #include <string>
+#include "Logger.h"
 
 using namespace std;
 
@@ -103,12 +104,14 @@ bool startNewGame() {
 
 	if (choice == 1)
 	{
+		GameLogger::printEvent("creating a new game..");
 		while (!chooseNewMap()) {
 			cout << "Invalid Choice! Select between 1 and 2";
 		}
 	}
 	else
 	{
+		GameLogger::printEvent("loading a existing game");
 
 		cout << "Welcome back, the game will now resume from the previous state" << endl;
 		cout << "Loading..." << endl;
@@ -127,6 +130,7 @@ bool startNewGame() {
 			i++;
 		}
 		cin >> choice;
+		GameLogger::printEvent("chose to load the " + v[choice] + " game");
 		editor->loadMap(v[choice]);
 		aMap = editor->current_map;
 		aCharacter = editor->current_map->getActor("p");
@@ -606,9 +610,11 @@ bool removeItemDecision() {
 }
 
 int main() {
+	GameLogger::enabled = true;
+	GameLogger::printEvent("test");
 
 	cout << "Welcome to Dragon and Dugeons" << endl;
-
+	GameLogger::printEvent("starting new game");
 	while (!startNewGame()) {
 		cout << " Invalid choice. Please select a choice between 1 and 2" << endl;
 	}
