@@ -13,7 +13,7 @@ using namespace std;
 void Map::addActor(string actorCode, Character* character)
 {
 	actors[actorCode] = character;
-	fillCell(character->getRow(), character->getRow(), actorCode.at(0));
+	fillCell(character->getCol(), character->getRow(), actorCode.at(0));
 }
 
 void Map::removeActor(string actorCode)
@@ -184,7 +184,7 @@ bool Map::isOccupied(int x, int y)
 //! @return : a character value of what's at the map cell
 char Map::getCharacter(int x, int y)
 {
-	return map[x][y];
+	return map[y][x];
 }
 
 //! Moves the character up in the map
@@ -292,7 +292,7 @@ vector<char> Map::getSurroundingEnemies()
 		//vert 
 		if (!(actors["p"]->getCol() == y[i]))
 		{
-			if (map[y[i]][actors["p"]->getRow()] != ' ' || map[y[i]][actors["p"]->getRow()] != '\0' || map[y[i]][actors["p"]->getRow()] != 'w' || map[y[i]][actors["p"]->getRow()] != 'c')
+			if (map[y[i]][actors["p"]->getRow()] != 32 && map[y[i]][actors["p"]->getRow()] != '\0' && map[y[i]][actors["p"]->getRow()] != 'w' && map[y[i]][actors["p"]->getRow()] != 'c' && map[y[i]][actors["p"]->getRow()] != NULL)
 			{
 				enemyCodes.push_back(map[y[i]][actors["p"]->getRow()]);
 			}
@@ -301,9 +301,9 @@ vector<char> Map::getSurroundingEnemies()
 		//horiz
 		if (!(actors["p"]->getRow() == x[i]))
 		{
-			if (map[y[i]][actors["p"]->getCol()] != ' ' || map[y[i]][actors["p"]->getCol()] != '\0' || map[y[i]][actors["p"]->getCol()] != 'w' || map[y[i]][actors["p"]->getCol()] != 'c')
+			if (map[actors["p"]->getCol()][x[i]] != 32 && map[actors["p"]->getCol()][x[i]] != '\0' && map[actors["p"]->getCol()][x[i]] != 'w' && map[actors["p"]->getCol()][x[i]] != 'c' && map[actors["p"]->getCol()][x[i]] != NULL)		
 			{
-				enemyCodes.push_back(map[y[i]][actors["p"]->getCol()]);
+				enemyCodes.push_back(map[actors["p"]->getCol()][x[i]]);
 			}
 		}
 	}
